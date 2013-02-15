@@ -1,0 +1,8 @@
+{
+  "id": "superuser",
+  "password": "supersecret",
+  "roles": [
+    "manager",
+    "admin"
+  ]
+}
