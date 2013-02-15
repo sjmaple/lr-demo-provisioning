@@ -36,7 +36,7 @@ Set up the demo environment
 		http://10.127.128.3:8080 (default Tomcat web app of node web1)
 		http://10.127.128.4:8080 (default Tomcat web app of node web2)
 
-* set up the 'web1' server for LiveRebel:
+* set up the `web1` server for LiveRebel:
 
 		$ vagrant ssh web1
 
@@ -61,14 +61,14 @@ Set up the demo environment
   changing towards orange and finally green, you can now click the 'finish'
 	button
 
-* press ctrl+c to interrupt the running Tomcat server
+* press `ctrl+c` to interrupt the running Tomcat server
 
-* update the daemon init.d script so that the LiveRebel agent is used:
+* update the daemon `init.d` script so that the LiveRebel agent is used:
 
 		$ nano -w /etc/init.d/tomcat6
 
-* inside the 'catalina_sh' function add '$CATALINA_BASE/lr-agent/bin/run.sh'
-  before the '$CATALINA_SH command', for instance:
+* inside the `catalina_sh` function add `$CATALINA_BASE/lr-agent/bin/run.sh`
+  before the `$CATALINA_SH command`, for instance:
 
 		...
 		cd \"$CATALINA_BASE\"; \
@@ -87,7 +87,7 @@ Set up the demo environment
 		$ vagrant ssh web2
 		...
 
-* now you can deploy the 'lr-demo' web application through LiveRebel in both
+* now you can deploy the `lr-demo` web application through LiveRebel in both
   configured Tomcat servers
 
 Remarks about the provided files
@@ -95,25 +95,25 @@ Remarks about the provided files
 
 * the Vagrantfile is the entry point towards the setup of this demo environment
 
-  - make sure that the configured IP addresses (10.127.128.1, 10.127.128.2,
-	  10.127.128.3, 10.127.128.4) aren't conflicting with hosts on your local
+  - make sure that the configured IP addresses (`10.127.128.1`, `10.127.128.2`,
+	  `10.127.128.3`, `10.127.128.4`) aren't conflicting with hosts on your local
 		network
-		
-	- the Tomcat webapp context path is set to 'lr-demo', you will probably want
+
+	- the Tomcat webapp context path is set to `lr-demo`, you will probably want
 	  to change that if you base you own installation on these files
-  
-	- MySQL is set up with 'change_me' for its passwords, you might want
+
+	- MySQL is set up with `change_me` for its passwords, you might want
 	  to ... change them :-)
 
-* a Tomcat super user is set up through Chef's data bags in the 'tomcat_users'
+* a Tomcat super user is set up through Chef's data bags in the `tomcat_users`
   directory, you'll most certainly want to change the password and the id for
 	production use
 
-* the Chef cookbooks prefixed with 'liverebel-' have been created specifically
+* the Chef cookbooks prefixed with `liverebel-` have been created specifically
   for this demo environment
 
 * all the other Chef cookbooks are the standard ones that can be obtained from
   http://community.opscode.com/cookbooks
 
-* the 'tomcat' cookbook has a small tweak in the 'server.xml.erb' template to
-  make it possible to pass in a 'jvmRoute' attribute to the servlet engine
+* the `tomcat` cookbook has a small tweak in the `server.xml.erb` template to
+  make it possible to pass in a `jvmRoute` attribute to the servlet engine
