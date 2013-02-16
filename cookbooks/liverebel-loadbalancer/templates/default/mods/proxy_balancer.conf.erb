@@ -7,12 +7,12 @@ ProxyPreserveHost On
 <Proxy balancer://mycluster>
   <% route = 1 %>
   <% for item in @node["loadbalancer"]["nodes"] %>
-  BalancerMember http://<%= item %>:8080 route=<%= route %>
+  BalancerMember http://<%= item %>:<%= node["loadbalancer"]["nodeport"] %> route=<%= route %>
   <%   route += 1 %>
   <% end %>	
 </Proxy>
 
 <Location /<%= node["loadbalancer"]["context"] %>>
   Allow from all
-  ProxyPass balancer://mycluster/<%= node["loadbalancer"]["context"] %> stickysession=JSESSIONID|jsessionid scolonpathdelim=On
+  ProxyPass balancer://mycluster/<%= node["loadbalancer"]["context"] %> stickysession=<%= node["loadbalancer"]["sessionid"] %> <% if node["loadbalancer"]["scolonpathdelim"] %>scolonpathdelim=On<% end %>
 </Location>
