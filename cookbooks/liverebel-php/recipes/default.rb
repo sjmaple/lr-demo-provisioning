@@ -1,8 +1,8 @@
-include_recipe "openssl"
 include_recipe "apt"
+include_recipe "php"
+include_recipe "phpunit"
 include_recipe "apache2"
 include_recipe "apache2::mod_php5"
-include_recipe "mysql::server"
 
 execute "disable-default-site" do
   command "sudo a2dissite default"

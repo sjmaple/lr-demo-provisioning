@@ -1,0 +1,15 @@
+{
+  "host": null,
+  "port": <%= node['selenium']['server']['hubport'] %>,
+  "newSessionWaitTimeout": -1,
+  "servlets" : [],
+  "prioritizer": null,
+  "capabilityMatcher": "org.openqa.grid.internal.utils.DefaultCapabilityMatcher",
+  "throwOnCapabilityNotPresent": true,
+  "nodePolling": <%= node['selenium']['server']['nodePolling'] %>,
+
+  "cleanUpCycle": <%= node['selenium']['server']['cleanUpCycle'] %>,
+  "timeout": <%= node['selenium']['server']['timeout'] %>,
+  "browserTimeout": 0,
+  "maxSession": <%= node['selenium']['server']['maxSession'] %>
+}

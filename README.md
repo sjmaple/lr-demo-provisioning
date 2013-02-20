@@ -5,9 +5,9 @@ Set up the demo environment
 * download and install Oracle VirtualBox: https://www.virtualbox.org
 * download and install Vagrant : http://www.vagrantup.com
 
-* download and add the lucid32 Vagrant box:
+* download and add the precise32 Vagrant box:
 
-    $ vagrant box add lucid32 http://files.vagrantup.com/lucid32.box
+    $ vagrant box add precise32 http://files.vagrantup.com/precise32.box
 
 * start LiveRebel:
 

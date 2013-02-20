@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant::Config.run do |config|
-  config.vm.box = "lucid32"
+  config.vm.box = "precise32"
 
   config.vm.boot_mode = :headless
   config.vm.customize ["modifyvm", :id, "--memory", 256]
@@ -19,6 +19,11 @@ Vagrant::Config.run do |config|
           :nodeport => 8080,
           :scolonpathdelim => true,
           :nodes => ["10.127.128.3", "10.127.128.4"]
+        },
+        :mysql => {
+          :server_root_password => "change_me",
+          :server_repl_password => "change_me",
+          :server_debian_password => "change_me"
         }
       }
     end
@@ -45,6 +50,11 @@ Vagrant::Config.run do |config|
           :sessionid => "PHPSESSIONID",
           :nodeport => 80,
           :nodes => ["10.127.128.6", "10.127.128.7"]
+        },
+        :mysql => {
+          :server_root_password => "change_me",
+          :server_repl_password => "change_me",
+          :server_debian_password => "change_me"
         }
       }
     end
@@ -72,11 +82,6 @@ def chef_tomcat(config, identifier)
     chef_config(chef)
     chef.add_recipe "liverebel-tomcat"
     chef.json = {
-      :mysql => {
-        :server_root_password => "change_me",
-        :server_repl_password => "change_me",
-        :server_debian_password => "change_me"
-      },
       :tomcat => {
         :jvm_route => identifier
       }
@@ -89,11 +94,10 @@ def chef_php(config)
     chef_config(chef)
     chef.add_recipe "liverebel-php"
     chef.json = {
-      :mysql => {
-        :server_root_password => "change_me",
-        :server_repl_password => "change_me",
-        :server_debian_password => "change_me"
+        :phpunit => {
+          :install_method => "pear",
+          :version => "3.7.14"
+        }
       }
-    }
   end
 end
