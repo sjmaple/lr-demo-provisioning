@@ -12,7 +12,7 @@ ProxyPreserveHost On
   <% end %>	
 </Proxy>
 
-<Location /<%= node["loadbalancer"]["context"] %>>
+<Location />
   Allow from all
-  ProxyPass balancer://mycluster/<%= node["loadbalancer"]["context"] %> stickysession=<%= node["loadbalancer"]["sessionid"] %> <% if node["loadbalancer"]["scolonpathdelim"] %>scolonpathdelim=On<% end %>
+  ProxyPass balancer://mycluster/ stickysession=<%= node["loadbalancer"]["sessionid"] %> <% if node["loadbalancer"]["scolonpathdelim"] %>scolonpathdelim=On<% end %>
 </Location>

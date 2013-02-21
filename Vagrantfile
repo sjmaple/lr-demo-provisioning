@@ -1,6 +1,15 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+@lr_subnet = "10.127.128"
+@lr_ip_host = "#{@lr_subnet}.1"
+@lr_ip_tomcatcluster = "#{@lr_subnet}.2"
+@lr_ip_tomcat1 = "#{@lr_subnet}.3"
+@lr_ip_tomcat2 = "#{@lr_subnet}.4"
+@lr_ip_phpcluster = "#{@lr_subnet}.5"
+@lr_ip_php1 = "#{@lr_subnet}.6"
+@lr_ip_php2 = "#{@lr_subnet}.7"
+
 Vagrant::Config.run do |config|
   config.vm.box = "precise32"
 
@@ -8,20 +17,22 @@ Vagrant::Config.run do |config|
   config.vm.customize ["modifyvm", :id, "--memory", 256]
 
   config.vm.define :tomcatcluster do |config|
-    config.vm.network :hostonly, "10.127.128.2"
+    config.vm.network :hostonly, @lr_ip_tomcatcluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
       chef.add_recipe "liverebel-loadbalancer"
       chef.json = {
+        :liverebel => {
+          :host => @lr_ip_host
+        },
         :loadbalancer => {
-          :context => "lr-demo-answers",
           :sessionid => "JSESSIONID|jsessionid",
           :nodeport => 8080,
           :scolonpathdelim => true,
-          :nodes => ["10.127.128.3", "10.127.128.4"]
+          :nodes => [@lr_ip_tomcat1, @lr_ip_tomcat2]
         },
         :mysql => {
-          :bind_address => "10.127.128.2",
+          :bind_address => @lr_ip_tomcatcluster,
           :allow_remote_root => true,
           :server_user_password => "change_me",
           :server_root_password => "change_me",
@@ -33,29 +44,31 @@ Vagrant::Config.run do |config|
   end
 
   config.vm.define :tomcat1 do |config|
-    config.vm.network :hostonly, "10.127.128.3"
+    config.vm.network :hostonly, @lr_ip_tomcat1
     chef_tomcat(config, 1)
   end
 
   config.vm.define :tomcat2 do |config|
-    config.vm.network :hostonly, "10.127.128.4"
+    config.vm.network :hostonly, @lr_ip_tomcat2
     chef_tomcat(config, 2)
   end
 
   config.vm.define :phpcluster do |config|
-    config.vm.network :hostonly, "10.127.128.5"
+    config.vm.network :hostonly, @lr_ip_phpcluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
       chef.add_recipe "liverebel-loadbalancer"
       chef.json = {
+        :liverebel => {
+          :host => @lr_ip_host
+        },
         :loadbalancer => {
-          :context => "lr-demo-answers",
           :sessionid => "PHPSESSIONID",
           :nodeport => 80,
-          :nodes => ["10.127.128.6", "10.127.128.7"]
+          :nodes => [@lr_ip_php1, @lr_ip_php2]
         },
         :mysql => {
-          :bind_address => "10.127.128.5",
+          :bind_address => @lr_ip_phpcluster,
           :allow_remote_root => true,
           :server_user_password => "change_me",
           :server_root_password => "change_me",
@@ -67,12 +80,12 @@ Vagrant::Config.run do |config|
   end
 
   config.vm.define :php1 do |config|
-    config.vm.network :hostonly, "10.127.128.6"
+    config.vm.network :hostonly, @lr_ip_php1
     chef_php(config)
   end
 
   config.vm.define :php2 do |config|
-    config.vm.network :hostonly, "10.127.128.7"
+    config.vm.network :hostonly, @lr_ip_php2
     chef_php(config)
   end
 end
@@ -88,6 +101,9 @@ def chef_tomcat(config, identifier)
     chef_config(chef)
     chef.add_recipe "liverebel-tomcat"
     chef.json = {
+      :liverebel => {
+        :host => @lr_ip_host
+      },
       :tomcat => {
         :jvm_route => identifier
       }
@@ -100,6 +116,9 @@ def chef_php(config)
     chef_config(chef)
     chef.add_recipe "liverebel-php"
     chef.json = {
+        :liverebel => {
+          :host => @lr_ip_host
+        },
         :phpunit => {
           :install_method => "pear",
           :version => "3.7.14"
