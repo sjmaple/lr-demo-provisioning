@@ -24,6 +24,11 @@ Set up the demo environment
 
 * add a new server to LiveRebel by clicking 'add server'
 
+* for the next steps it's important that you have no firewall blocking incoming
+  http and https traffic to Java applications, otherwise it will not be
+  possible to connect from the virtual machines to your local LiveRebel 
+  installation
+
 Start a Tomcat cluster
 ----------------------
 

@@ -1,4 +1,5 @@
 include_recipe "apt"
+include_recipe "java"
 include_recipe "php"
 include_recipe "phpunit"
 include_recipe "apache2"
