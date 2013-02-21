@@ -11,7 +11,20 @@ package "php5-mysql" do
   action :install
 end
 
+template "#{node['apache']['dir']}/sites-available/lr-demo-answers" do
+  source "lr-demo-answers.erb"
+  owner "root"
+  group node['apache']['root_group']
+  mode 00644
+  notifies :restart, "service[apache2]"
+end
+
 execute "enable-default-site" do
-  command "sudo a2ensite default"
+  command "sudo a2dissite default"
+  notifies :reload, resources(:service => "apache2"), :delayed
+end
+
+execute "enable-lr-demo-answers-site" do
+  command "sudo a2ensite lr-demo-answers"
   notifies :reload, resources(:service => "apache2"), :delayed
 end
