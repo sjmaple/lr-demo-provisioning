@@ -14,7 +14,7 @@ Vagrant::Config.run do |config|
       chef.add_recipe "liverebel-loadbalancer"
       chef.json = {
         :loadbalancer => {
-          :context => "lr-demo",
+          :context => "lr-demo-answers",
           :sessionid => "JSESSIONID|jsessionid",
           :nodeport => 8080,
           :scolonpathdelim => true,
@@ -49,7 +49,7 @@ Vagrant::Config.run do |config|
       chef.add_recipe "liverebel-loadbalancer"
       chef.json = {
         :loadbalancer => {
-          :context => "lr-demo",
+          :context => "lr-demo-answers",
           :sessionid => "PHPSESSIONID",
           :nodeport => 80,
           :nodes => ["10.127.128.6", "10.127.128.7"]
