@@ -40,6 +40,6 @@ mysql_database_user "qa" do
   password node["mysql"]["server_user_password"]
   database_name "qa"
   host "%"
-  privileges [:select,:update,:insert]
+  privileges [:all]
   action :grant
 end
