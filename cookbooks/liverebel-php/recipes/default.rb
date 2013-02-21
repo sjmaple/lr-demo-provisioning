@@ -11,6 +11,18 @@ package "php5-mysql" do
   action :install
 end
 
+package "php5-curl" do
+  action :install
+end
+
+phpch = php_pear_channel "pear.phpunit.de" do
+  action :discover
+end
+php_pear "PHPUnit_Selenium" do
+  channel phpch.channel_name
+  action :install
+end
+
 template "#{node['apache']['dir']}/sites-available/lr-demo-answers" do
   source "lr-demo-answers.erb"
   owner "root"
