@@ -10,6 +10,7 @@ include_recipe "selenium::firefox"
 include_recipe "selenium::chrome"
 include_recipe "selenium::grid_hub"
 include_recipe "selenium::grid_node"
+include_recipe "liverebel-database-agent"
 
 apache_module "proxy_balancer" do
   conf true
