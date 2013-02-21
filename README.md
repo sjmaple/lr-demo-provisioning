@@ -110,8 +110,10 @@ Start a PHP cluster
     http://10.127.128.7 (default Apache web app of node php2)
 
 * the PHP nodes automatically download the latest file agent from LiveRebel
-  running on 10.127.128.1 and start it, you should see two file servers in
-  the LiveRebel Command Center at: https://10.127.128.1:9001/
+  running on your machine outside of Vagrant and start it, you should
+  see two file servers in the LiveRebel Command Center at:
+
+    https://localhost:9001
 
 Remarks about the provided files
 ================================
@@ -122,6 +124,9 @@ Remarks about the provided files
     `10.127.128.3`, `10.127.128.4`, `10.127.128.5`,
     `10.127.128.6`, `10.127.128.7`) aren't conflicting with hosts on your local
     network
+
+  - your on machine is communicating through a dedicated host-only network with
+    the Vagrant nodes, the IP address of your machine is `10.127.128.1`
 
   - the Tomcat webapp context path is set to `lr-demo`, you will probably want
     to change that if you base you own installation on these files

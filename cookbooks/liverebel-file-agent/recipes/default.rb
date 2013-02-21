@@ -4,7 +4,7 @@ file_agent_installed_path = "/home/vagrant/lr-agent"
 execute "install-file-agent" do
   cwd "/home/vagrant/"
   user "vagrant"
-  command "/usr/bin/java -jar /home/vagrant/lr-file-agent-installer.jar"
+  command "/usr/bin/java -DserverHome=/var/www -jar /home/vagrant/lr-file-agent-installer.jar"
   action :nothing
   not_if do
     File.exists?(file_agent_installed_path)
@@ -22,7 +22,5 @@ remote_file file_agent_installer_jar_path do
 end
 
 execute "run-file-agent" do
-  cwd "/home/vagrant/"
-  user "vagrant"
   command "#{file_agent_installed_path}/bin/agent.sh&"
 end

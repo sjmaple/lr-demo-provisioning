@@ -6,12 +6,7 @@ include_recipe "apache2"
 include_recipe "apache2::mod_php5"
 include_recipe "liverebel-file-agent"
 
-execute "disable-default-site" do
-  command "sudo a2dissite default"
-  notifies :reload, resources(:service => "apache2"), :delayed
-end
-
-web_app "project" do
-  template "project.conf.erb"
+execute "enable-default-site" do
+  command "sudo a2ensite default"
   notifies :reload, resources(:service => "apache2"), :delayed
 end
