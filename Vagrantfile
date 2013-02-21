@@ -21,6 +21,9 @@ Vagrant::Config.run do |config|
           :nodes => ["10.127.128.3", "10.127.128.4"]
         },
         :mysql => {
+          :bind_address => "10.127.128.2",
+          :allow_remote_root => true,
+          :server_user_password => "change_me",
           :server_root_password => "change_me",
           :server_repl_password => "change_me",
           :server_debian_password => "change_me"
@@ -52,6 +55,9 @@ Vagrant::Config.run do |config|
           :nodes => ["10.127.128.6", "10.127.128.7"]
         },
         :mysql => {
+          :bind_address => "10.127.128.5",
+          :allow_remote_root => true,
+          :server_user_password => "change_me",
           :server_root_password => "change_me",
           :server_repl_password => "change_me",
           :server_debian_password => "change_me"
