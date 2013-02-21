@@ -5,6 +5,11 @@ Set up the demo environment
 * download and install Oracle VirtualBox: https://www.virtualbox.org
 * download and install Vagrant : http://www.vagrantup.com
 
+* not that when using Vagrant 1.0.6 on Windows with Cygwin, there's a known bug
+  regarding Unix type paths and Windows paths. This forum posts gives an easy
+  fix that can be used until a new version of Vagrant is released:
+  https://groups.google.com/forum/#!msg/vagrant-up/UEixJVaHYMw/cmMHmLxLxGEJ
+
 * download and add the precise32 Vagrant box:
 
     $ vagrant box add precise32 http://files.vagrantup.com/precise32.box
