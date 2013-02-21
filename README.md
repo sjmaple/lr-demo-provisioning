@@ -34,9 +34,7 @@ Start a Tomcat cluster
 
 * in another terminal start the virtual machines:
 
-    $ vagrant up tomcat1
-    $ vagrant up tomcat2
-    $ vagrant up tomcatcluster
+    $ vagrant up tomcat1 tomcat2 tomcatcluster
 
 * try the different nodes out in a web browser:
 
@@ -103,9 +101,7 @@ Start a PHP cluster
 
 * in another terminal start the virtual machines:
 
-    $ vagrant up php1
-    $ vagrant up php2
-    $ vagrant up phpcluster
+    $ vagrant up php1 php2 phpcluster
 
 * try the different nodes out in a web browser:
 
@@ -113,7 +109,9 @@ Start a PHP cluster
     http://10.127.128.6 (default Apache web app of node php1)
     http://10.127.128.7 (default Apache web app of node php2)
 
-_TODO_
+* the PHP nodes automatically download the latest file agent from LiveRebel
+  running on 10.127.128.1 and start it, you should see two file servers in
+  the LiveRebel Command Center at: https://10.127.128.1:9001/
 
 Remarks about the provided files
 ================================

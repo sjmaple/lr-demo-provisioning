@@ -4,6 +4,7 @@ include_recipe "php"
 include_recipe "phpunit"
 include_recipe "apache2"
 include_recipe "apache2::mod_php5"
+include_recipe "liverebel-file-agent"
 
 execute "disable-default-site" do
   command "sudo a2dissite default"
