@@ -4,7 +4,7 @@ file_agent_installed_path = "/home/vagrant/lr-agent"
 execute "install-file-agent" do
   cwd "/home/vagrant/"
   user "vagrant"
-  command "/usr/bin/java -DserverHome=/var/www -jar /home/vagrant/lr-file-agent-installer.jar"
+  command "/usr/bin/java -DserverHome=/var/www -Dliverebel.host=10.127.128.1 -jar /home/vagrant/lr-file-agent-installer.jar"
   action :nothing
   not_if do
     File.exists?(file_agent_installed_path)
