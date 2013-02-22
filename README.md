@@ -22,19 +22,40 @@ Set up the demo environment
 
 * create your first admin in LiveRebel
 
-* add a new server to LiveRebel by clicking 'add server'
-
 * for the next steps it's important that you have no firewall blocking incoming
   http and https traffic to Java applications, otherwise it will not be
   possible to connect from the virtual machines to your local LiveRebel 
   installation
 
-Start a Tomcat cluster
-----------------------
+Start a PHP cluster
+-------------------
 
 * in another terminal start the virtual machines:
 
-    $ vagrant up tomcat1 tomcat2 tomcatcluster
+    $ vagrant up phpcluster php1 php2
+
+* try the different nodes out in a web browser:
+
+    http://10.127.128.5/balancer-manager (overview of the load balancer)
+    http://10.127.128.6 (default Apache web app of node php1)
+    http://10.127.128.7 (default Apache web app of node php2)
+
+* the PHP nodes automatically download the latest file agent from LiveRebel
+  running on your machine outside of Vagrant and start it, you should see two
+  file servers and one database server in the LiveRebel Command Center at:
+
+    https://localhost:9001
+
+* now you can deploy the `lr-demo-answers` PHP web application with LiveRebel
+
+Start a Tomcat cluster
+----------------------
+
+* add a new server to LiveRebel by clicking 'add server'
+
+* in another terminal start the virtual machines:
+
+    $ vagrant up tomcatcluster tomcat1 tomcat2
 
 * try the different nodes out in a web browser:
 
@@ -93,43 +114,24 @@ Start a Tomcat cluster
     $ vagrant ssh tomcat2
     ...
 
-* now you can deploy the `lr-demo` web application through LiveRebel in both
-  configured Tomcat servers
-
-Start a PHP cluster
-----------------------
-
-* in another terminal start the virtual machines:
-
-    $ vagrant up php1 php2 phpcluster
-
-* try the different nodes out in a web browser:
-
-    http://10.127.128.5/balancer-manager (overview of the load balancer)
-    http://10.127.128.6 (default Apache web app of node php1)
-    http://10.127.128.7 (default Apache web app of node php2)
-
-* the PHP nodes automatically download the latest file agent from LiveRebel
-  running on your machine outside of Vagrant and start it, you should
-  see two file servers in the LiveRebel Command Center at:
-
-    https://localhost:9001
+* now you can deploy the `lr-demo-answers` web application through LiveRebel in both
+  configured Tomcat servers and the database server
 
 Remarks about the provided files
 ================================
 
 * the Vagrantfile is the entry point towards the setup of this demo environment
 
-  - make sure that the configured IP addresses (`10.127.128.1`, `10.127.128.2`,
-    `10.127.128.3`, `10.127.128.4`, `10.127.128.5`,
-    `10.127.128.6`, `10.127.128.7`) aren't conflicting with hosts on your local
-    network
+  - make sure that the configured IP addresses aren't conflicting with hosts on
+    your local network, if they are, the easiest way to change them if by
+    selecting another value for the global `lr_subnet` variable. By default it
+    is set to `10.127.128`
 
-  - your on machine is communicating through a dedicated host-only network with
+  - your own machine is communicating through a dedicated host-only network with
     the Vagrant nodes, the IP address of your machine is `10.127.128.1`
 
-  - the Tomcat webapp context path is set to `lr-demo`, you will probably want
-    to change that if you base you own installation on these files
+  - the Tomcat webapp context path is set to `lr-demo-answers`, you will
+    probably want to change that if you base you own installation on these files
 
   - MySQL is set up with `change_me` for its passwords, you might want
     to ... change them :-)
