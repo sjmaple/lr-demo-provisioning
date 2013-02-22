@@ -7,17 +7,22 @@ Set up the demo environment
 
 * download and add the precise32 Vagrant box:
 
+    ```bash
     $ vagrant box add precise32 http://files.vagrantup.com/precise32.box
+    ```
 
 * start LiveRebel:
 
+    ```bash
     On Unix    $ ./bin/lr-command-center.sh run
-
     On Windows $ bin\lr-command-center.cmd run
+    ```
 
 * check it's running by open this URL in your browser, keep it open:
 
+    ```
     https://localhost:9001
+    ```
 
 * provide a LiveRebel license (free or commercial)
 
@@ -33,19 +38,25 @@ Start a PHP cluster
 
 * in another terminal start the virtual machines:
 
+    ```bash
     $ vagrant up phpcluster php1 php2
+    ```
 
 * try the different nodes out in a web browser:
 
+    ```
     http://10.127.128.5/balancer-manager (overview of the load balancer)
     http://10.127.128.6 (default Apache web app of node php1)
     http://10.127.128.7 (default Apache web app of node php2)
+    ```
 
 * the PHP nodes automatically download the latest file agent from LiveRebel
   running on your machine outside of Vagrant and start it, you should see two
   file servers and one database server in the LiveRebel Command Center at:
 
+    ```
     https://localhost:9001
+    ```
 
 * now you can deploy the `lr-demo-answers` PHP web application with LiveRebel
 
@@ -56,13 +67,17 @@ Start a Tomcat cluster
 
 * in another terminal start the virtual machines:
 
+    ```bash
     $ vagrant up tomcatcluster tomcat1 tomcat2
+    ```
 
 * try the different nodes out in a web browser:
 
+    ```
     http://10.127.128.2/balancer-manager (overview of the load balancer)
     http://10.127.128.3:8080 (default Tomcat web app of node tomcat1)
     http://10.127.128.4:8080 (default Tomcat web app of node tomcat2)
+    ```
 
 * set up the `tomcat1` server for LiveRebel:
 
@@ -85,7 +100,9 @@ Start a Tomcat cluster
   use the following shell command to start Tomcat instead of what's shown in
   the Command Center:
 
+    ```bash
     $ su -s /bin/bash -c "$CATALINA_BASE/lr-agent/bin/run.sh $CATALINA_HOME/bin/catalina.sh run" tomcat6
+    ```
 
 * check the LiveRebel Command Center again and you should see the server status
   changing towards orange and finally green, you can now click the 'finish'
@@ -95,27 +112,35 @@ Start a Tomcat cluster
 
 * update the daemon `init.d` script so that the LiveRebel agent is used:
 
+    ```bash
     $ nano -w /etc/init.d/tomcat6
+    ```
 
 * inside the `catalina_sh` function add `$CATALINA_BASE/lr-agent/bin/run.sh`
   before the `$CATALINA_SH command`, for instance:
 
+    ```bash
     ...
     cd \"$CATALINA_BASE\"; \
     \"$CATALINA_BASE/lr-agent/bin/run.sh\" \
     \"$CATALINA_SH\" $@"
     ...
+    ```
 
 * start the tomcat service again:
 
+    ```bash
     $ service tomcat6 start
+    ```
 
 * repeat these steps for tomcat2, except that you don't need to interact with
   the LiveRebel Command Center anymore, it automatically picks up newly added
   servers
 
+    ```bash
     $ vagrant ssh tomcat2
     ...
+    ```
 
 * now you can deploy the `lr-demo-answers` web application through LiveRebel in both
   configured Tomcat servers and the database server
