@@ -16,7 +16,7 @@ Set up the demo environment
 
 * check it's running by open this URL in your browser, keep it open:
 
-    https://localhost:9001/
+    https://localhost:9001
 
 * provide a LiveRebel license (free or commercial)
 
