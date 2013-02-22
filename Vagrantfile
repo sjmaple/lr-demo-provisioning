@@ -63,7 +63,7 @@ Vagrant::Config.run do |config|
           :host => @lr_ip_host
         },
         :loadbalancer => {
-          :sessionid => "PHPSESSIONID",
+          :sessionid => "BALANCEID",
           :nodeport => 80,
           :nodes => [@lr_ip_php1, @lr_ip_php2]
         },
@@ -81,12 +81,12 @@ Vagrant::Config.run do |config|
 
   config.vm.define :php1 do |config|
     config.vm.network :hostonly, @lr_ip_php1
-    chef_php(config)
+    chef_php(config, 1)
   end
 
   config.vm.define :php2 do |config|
     config.vm.network :hostonly, @lr_ip_php2
-    chef_php(config)
+    chef_php(config, 2)
   end
 end
 
@@ -111,13 +111,17 @@ def chef_tomcat(config, identifier)
   end
 end
 
-def chef_php(config)
+def chef_php(config, identifier)
   config.vm.provision :chef_solo do |chef|
     chef_config(chef)
     chef.add_recipe "liverebel-php"
     chef.json = {
         :liverebel => {
           :host => @lr_ip_host
+        },
+        :php => {
+          :server_route => identifier,
+          :balance_cookie_ip => @lr_ip_phpcluster
         },
         :phpunit => {
           :install_method => "pear",
