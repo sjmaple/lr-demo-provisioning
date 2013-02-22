@@ -12,6 +12,7 @@ Set up the demo environment
 * start LiveRebel:
 
     On Unix    $ ./bin/lr-command-center.sh run
+    
     On Windows $ bin\lr-command-center.cmd run
 
 * check it's running by open this URL in your browser, keep it open:
