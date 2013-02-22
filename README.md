@@ -12,7 +12,7 @@ Set up the demo environment
 * start LiveRebel:
 
     On Unix    $ ./bin/lr-command-center.sh run
-    
+
     On Windows $ bin\lr-command-center.cmd run
 
 * check it's running by open this URL in your browser, keep it open:
@@ -66,6 +66,7 @@ Start a Tomcat cluster
 
 * set up the `tomcat1` server for LiveRebel:
 
+    ```bash
     $ vagrant ssh tomcat1
 
     $ sudo su -
@@ -78,6 +79,7 @@ Start a Tomcat cluster
     $ wget -O lr-agent-installer.jar --no-check-certificate https://10.127.128.1:9001/public/lr-agent-installer.jar
     $ java -DserverHome=$CATALINA_HOME -jar lr-agent-installer.jar
     $ chown -R tomcat6:tomcat6 lr-agent
+    ```
 
 * check if the LiveRebel Command Center sees the Tomcat with the agent, however
   use the following shell command to start Tomcat instead of what's shown in
