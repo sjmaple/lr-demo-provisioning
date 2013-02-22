@@ -14,7 +14,7 @@ Vagrant::Config.run do |config|
   config.vm.box = "precise32"
 
   config.vm.boot_mode = :headless
-  config.vm.customize ["modifyvm", :id, "--memory", 256]
+  config.vm.customize ["modifyvm", :id, "--memory", 384]
 
   config.vm.define :tomcatcluster do |config|
     config.vm.network :hostonly, @lr_ip_tomcatcluster
