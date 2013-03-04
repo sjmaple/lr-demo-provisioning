@@ -72,8 +72,8 @@ Start a PHP cluster
     ```
 
   * configure the MySQL server in LiveRebel by going to the `Servers` tab and
-    clicking on `Details' next to `Database server`, these are are the
-    connection details:
+    clicking on `Details` next to `Database server`, these are the connection
+    details:
 
     ```
     Driver: MySQL
@@ -101,7 +101,7 @@ Start a PHP cluster
 Start a Tomcat cluster
 ----------------------
 
-* **this version is work in progress as the Java demo is still being developed**
+* **the Tomcat version is work in progress as the Java demo application is still under development, many of the steps will be automated**
 
 * add a new server to LiveRebel by clicking 'add server'
 
