@@ -20,12 +20,12 @@ Vagrant::Config.run do |config|
     config.vm.network :hostonly, @lr_ip_tomcatcluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
-      chef.add_recipe "liverebel-loadbalancer"
+      chef.add_recipe "liverebel-cluster"
       chef.json = {
         :liverebel => {
           :host => @lr_ip_host
         },
-        :loadbalancer => {
+        :cluster => {
           :sessionid => "JSESSIONID|jsessionid",
           :nodeport => 8080,
           :scolonpathdelim => true,
@@ -57,12 +57,12 @@ Vagrant::Config.run do |config|
     config.vm.network :hostonly, @lr_ip_phpcluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
-      chef.add_recipe "liverebel-loadbalancer"
+      chef.add_recipe "liverebel-cluster"
       chef.json = {
         :liverebel => {
           :host => @lr_ip_host
         },
-        :loadbalancer => {
+        :cluster => {
           :sessionid => "BALANCEID",
           :nodeport => 80,
           :nodes => [@lr_ip_php1, @lr_ip_php2]

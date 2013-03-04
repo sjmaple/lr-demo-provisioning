@@ -36,7 +36,9 @@ Set up the demo environment
 Start a PHP cluster
 -------------------
 
-* in another terminal start the virtual machines:
+* in another terminal start the virtual machines, note that this takes a long
+  time since Chef will run the provisioning scripts on each virtual machine
+  and download the software that needs to be installed:
 
     ```bash
     $ vagrant up phpcluster php1 php2
@@ -58,10 +60,48 @@ Start a PHP cluster
     https://localhost:9001
     ```
 
-* now you can deploy the `lr-demo-answers` PHP web application with LiveRebel
+* now you can deploy the `lr-demo-answers` PHP web application with LiveRebel,
+  these are the steps:
+
+  * install the MySQL JDBC driver for database migrations by going to the
+    `Database drivers` section in LiveRebel's `Configuration` panel,
+    you can download the driver from here:
+
+    ```
+    http://dev.mysql.com/downloads/connector/j/
+    ```
+
+  * configure the MySQL server in LiveRebel by going to the `Servers` tab and
+    clicking on `Details' next to `Database server`, these are are the
+    connection details:
+
+    ```
+    Driver: MySQL
+    Host: 10.127.128.5 : 3306 / qa
+    Username: qa  Password: change_me
+    ```
+  
+  * go to the LiveRebel `Applications` tab and press the `Add Application`
+    button to upload the four versions of the PHP Answers demo application
+
+  * when the upload is finished, click the `Add Deployment` button to select
+    which version you want to deploy (start with v1.0 and upgrade through
+    the next versions later on)
+
+  * some application properties will not be known by LiveRebel and you will
+    not be able to deploy v1.0 unless you provide suitable values
+
+  * when the deployment is done, visit the following URL to see the
+    application running through the load balancer:
+
+    ```
+    http://10.127.128.5
+    ```
 
 Start a Tomcat cluster
 ----------------------
+
+* **this version is work in progress as the Java demo is still being developed**
 
 * add a new server to LiveRebel by clicking 'add server'
 

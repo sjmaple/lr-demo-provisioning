@@ -4,12 +4,12 @@
         RewriteEngine On
         RewriteRule .* - [CO=BALANCEID:balancer.<%= node['php']['server_route'] %>:<%= node['php']['balance_cookie_ip'] %>]
 
-        DocumentRoot /var/www/lr-demo-answers/app/
+        DocumentRoot /var/www/lr-demo-answers/www/
         <Directory />
                 Options FollowSymLinks
                 AllowOverride None
         </Directory>
-        <Directory /var/www/lr-demo-answers/app/>
+        <Directory /var/www/lr-demo-answers/www/>
                 Options Indexes FollowSymLinks MultiViews
                 AllowOverride All
                 Order allow,deny
