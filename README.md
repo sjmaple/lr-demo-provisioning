@@ -93,7 +93,22 @@ Start a PHP cluster
     textfield
 
   * some application properties will not be known by LiveRebel and you will
-    not be able to deploy v1.0 unless you provide suitable values
+    not be able to deploy unless you provide suitable values, below are
+    a few example properties that will make the demo application work but
+    they need fine-tuning for the mail and Facebook sections:
+
+    ```
+    db.url=mysql:host=10.127.128.5;dbname=qa
+    db.username=qa
+    db.password=change_me
+    fb.appId=12345678901234
+    fb.appSecret=123456789012a1234567890b12234567
+    mail.host=smtp.gmail.com
+    mail.username=you@gmail.com
+    mail.password=yourpassword
+    mail.port=587
+    mail.encryption=tls
+    ```
 
   * when the deployment is done, visit the following URL to see the
     application running through the load balancer:
@@ -162,7 +177,24 @@ Start a Tomcat cluster
     the next versions later on)
 
   * some application properties will not be known by LiveRebel and you will
-    not be able to deploy v1.0 unless you provide suitable values
+    not be able to deploy unless you provide suitable values, below are
+    a few example properties that will make the demo application work but
+    they need fine-tuning for the mail and Facebook sections:
+
+    ```
+    db.url=jdbc:mysql://10.127.128.2:3306/qa
+    db.username=qa
+    db.password=change_me
+    fb.appId=12345678901234
+    fb.appSecret=123456789012a1234567890b12234567
+    mail.host=smtp.gmail.com
+    mail.username=you@gmail.com
+    mail.password=yourpassword
+    mail.port=587
+    mail.authenticate=true
+    mail.protocol=smtps
+    mail.startttls=true
+    ```
 
   * when the deployment is done, visit the following URL to see the
     application running through the load balancer:
