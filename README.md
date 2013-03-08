@@ -119,67 +119,14 @@ Start a Tomcat cluster
     http://10.127.128.4:8080 (default Tomcat web app of node tomcat2)
     ```
 
-* set up the `tomcat1` server for LiveRebel:
+* set up the `tomcat1` and `tomcat2` server for LiveRebel by issuing the following ssh
+  commands as root (WIP)
 
-    ```bash
-    $ vagrant ssh tomcat1
-
-    $ sudo su -
-    $ service tomcat6 stop
-
-    $ export CATALINA_BASE=/var/lib/tomcat6
-    $ export CATALINA_HOME=/usr/share/tomcat6
-    $ cd $CATALINA_BASE
-
-    $ wget -O lr-agent-installer.jar --no-check-certificate https://10.127.128.1:9001/public/lr-agent-installer.jar
-    $ java -DserverHome=$CATALINA_HOME -jar lr-agent-installer.jar
-    $ chown -R tomcat6:tomcat6 lr-agent
     ```
-
-* check if the LiveRebel Command Center sees the Tomcat with the agent, however
-  use the following shell command to start Tomcat instead of what's shown in
-  the Command Center:
-
-    ```bash
-    $ su -s /bin/bash -c "$CATALINA_BASE/lr-agent/bin/run.sh $CATALINA_HOME/bin/catalina.sh run" tomcat6
-    ```
-
-* check the LiveRebel Command Center again and you should see the server status
-  changing towards orange and finally green, you can now click the 'finish'
-  button
-
-* press `ctrl+c` to interrupt the running Tomcat server
-
-* update the daemon `init.d` script so that the LiveRebel agent is used:
-
-    ```bash
-    $ nano -w /etc/init.d/tomcat6
-    ```
-
-* inside the `catalina_sh` function add `$CATALINA_BASE/lr-agent/bin/run.sh`
-  before the `$CATALINA_SH command`, for instance:
-
-    ```bash
-    ...
-    cd \"$CATALINA_BASE\"; \
-    \"$CATALINA_BASE/lr-agent/bin/run.sh\" \
-    \"$CATALINA_SH\" $@"
-    ...
-    ```
-
-* start the tomcat service again:
-
-    ```bash
-    $ service tomcat6 start
-    ```
-
-* repeat these steps for tomcat2, except that you don't need to interact with
-  the LiveRebel Command Center anymore, it automatically picks up newly added
-  servers
-
-    ```bash
-    $ vagrant ssh tomcat2
-    ...
+    service tomcat7 stop
+    su -l -s /bin/bash -c "wget -O lr-agent-installer.jar --no-check-certificate https://10.127.128.1:9001/public/lr-agent-installer.jar" tomcat
+    su -l -s /bin/bash -c "java -jar lr-agent-installer.jar" tomcat
+    su -l -s /bin/bash -c "lr-agent/bin/run.sh bin/catalina.sh start" tomcat
     ```
 
 * now you can deploy the `lr-demo-answers` web application through LiveRebel in both
