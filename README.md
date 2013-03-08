@@ -38,7 +38,8 @@ Start a PHP cluster
 
 * in another terminal start the virtual machines, note that this takes a long
   time since Chef will run the provisioning scripts on each virtual machine
-  and download the software that needs to be installed:
+  and download the software that needs to be installed,
+  make sure the lr-demo-provisioning directory is your current directory:
 
     ```bash
     $ vagrant up phpcluster php1 php2
@@ -122,7 +123,11 @@ Start a Tomcat cluster
 
 * add a new server to LiveRebel by clicking 'add server'
 
-* in another terminal start the virtual machines:
+
+* in another terminal start the virtual machines, note that this takes a long
+  time since Chef will run the provisioning scripts on each virtual machine
+  and download the software that needs to be installed,
+  make sure the lr-demo-provisioning directory is your current directory:
 
     ```bash
     $ vagrant up tomcatcluster tomcat1 tomcat2
