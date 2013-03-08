@@ -88,6 +88,10 @@ Start a PHP cluster
     which version you want to deploy (start with v1.0 and upgrade through
     the next versions later on)
 
+  * the deployment path for which the PHP servers are configured
+    is `/var/www/lr-demo-answers`, you'll have to enter that in the `Path`
+    textfield
+
   * some application properties will not be known by LiveRebel and you will
     not be able to deploy v1.0 unless you provide suitable values
 
