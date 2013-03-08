@@ -78,19 +78,6 @@ when "debian","ubuntu"
 		command "update-rc.d tomcat7 defaults"
 		action :run
     end
-else
-    template "/etc/init.d/tomcat7" do
-		source "init-rh.erb"
-		owner "root"
-		group "root"
-		mode "0755"
-    end
-    execute "init-rh" do
-		user "root"
-		group "root"
-		command "chkconfig --add tomcat7"
-		action :run
-    end
 end
 
 # Config from template
@@ -99,10 +86,4 @@ template "#{tc7target}/tomcat/conf/server.xml" do
     owner "#{tc7user}"
     group "#{tc7group}"
     mode "0644"
-end
-
-# Start service
-service "tomcat7" do
-    service_name "tomcat7"
-    action :start
 end

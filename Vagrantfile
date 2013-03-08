@@ -20,7 +20,7 @@ Vagrant::Config.run do |config|
     config.vm.network :hostonly, @lr_ip_tomcatcluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
-      chef.add_recipe "liverebel-cluster"
+      chef.add_recipe "liverebel-cluster-node"
       chef.json = {
         :liverebel => {
           :host => @lr_ip_host
@@ -57,7 +57,7 @@ Vagrant::Config.run do |config|
     config.vm.network :hostonly, @lr_ip_phpcluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
-      chef.add_recipe "liverebel-cluster"
+      chef.add_recipe "liverebel-cluster-node"
       chef.json = {
         :liverebel => {
           :host => @lr_ip_host
@@ -99,7 +99,7 @@ end
 def chef_tomcat(config, identifier)
   config.vm.provision :chef_solo do |chef|
     chef_config(chef)
-    chef.add_recipe "liverebel-tomcat"
+    chef.add_recipe "liverebel-tomcat-node"
     chef.json = {
       :liverebel => {
         :host => @lr_ip_host
@@ -114,7 +114,7 @@ end
 def chef_php(config, identifier)
   config.vm.provision :chef_solo do |chef|
     chef_config(chef)
-    chef.add_recipe "liverebel-php"
+    chef.add_recipe "liverebel-php-node"
     chef.json = {
         :liverebel => {
           :host => @lr_ip_host

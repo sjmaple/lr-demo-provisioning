@@ -143,6 +143,7 @@ CATALINA_PID=\"$CATALINA_PID\"; \
 CATALINA_TMPDIR=\"$CATALINA_TMPDIR\"; \
 LANG=\"$LANG\"; JSSE_HOME=\"$JSSE_HOME\"; \
 cd \"$CATALINA_BASE\"; \
+\"$CATALINA_BASE/lr-agent/bin/run.sh\" \
 \"$CATALINA_SH\" $@"
 
 if [ "$AUTHBIND" = "yes" -a "$1" = "start" ]; then
