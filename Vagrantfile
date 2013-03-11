@@ -23,7 +23,8 @@ Vagrant::Config.run do |config|
       chef.add_recipe "liverebel-cluster-node"
       chef.json = {
         :liverebel => {
-          :host => @lr_ip_host
+          :host => @lr_ip_host,
+          :agent => @lr_ip_tomcatcluster
         },
         :cluster => {
           :sessionid => "JSESSIONID|jsessionid",
@@ -44,13 +45,11 @@ Vagrant::Config.run do |config|
   end
 
   config.vm.define :tomcat1 do |config|
-    config.vm.network :hostonly, @lr_ip_tomcat1
-    chef_tomcat(config, 1)
+    chef_tomcat(config, @lr_ip_tomcat1, 1)
   end
 
   config.vm.define :tomcat2 do |config|
-    config.vm.network :hostonly, @lr_ip_tomcat2
-    chef_tomcat(config, 2)
+    chef_tomcat(config, @lr_ip_tomcat2, 2)
   end
 
   config.vm.define :phpcluster do |config|
@@ -60,7 +59,8 @@ Vagrant::Config.run do |config|
       chef.add_recipe "liverebel-cluster-node"
       chef.json = {
         :liverebel => {
-          :host => @lr_ip_host
+          :host => @lr_ip_host,
+          :agent => @lr_ip_phpcluster
         },
         :cluster => {
           :sessionid => "BALANCEID",
@@ -80,13 +80,11 @@ Vagrant::Config.run do |config|
   end
 
   config.vm.define :php1 do |config|
-    config.vm.network :hostonly, @lr_ip_php1
-    chef_php(config, 1)
+    chef_php(config, @lr_ip_php1, 1)
   end
 
   config.vm.define :php2 do |config|
-    config.vm.network :hostonly, @lr_ip_php2
-    chef_php(config, 2)
+    chef_php(config, @lr_ip_php2, 2)
   end
 end
 
@@ -96,13 +94,15 @@ def chef_config(chef)
   chef.roles_path = "roles"
 end
 
-def chef_tomcat(config, identifier)
+def chef_tomcat(config, ipAddress, identifier)
+  config.vm.network :hostonly, ipAddress
   config.vm.provision :chef_solo do |chef|
     chef_config(chef)
     chef.add_recipe "liverebel-tomcat-node"
     chef.json = {
       :liverebel => {
-        :host => @lr_ip_host
+        :host => @lr_ip_host,
+        :agent => ipAddress
       },
       :tomcat => {
         :jvm_route => identifier
@@ -111,13 +111,15 @@ def chef_tomcat(config, identifier)
   end
 end
 
-def chef_php(config, identifier)
+def chef_php(config, ipAddress, identifier)
+  config.vm.network :hostonly, ipAddress
   config.vm.provision :chef_solo do |chef|
     chef_config(chef)
     chef.add_recipe "liverebel-php-node"
     chef.json = {
         :liverebel => {
-          :host => @lr_ip_host
+          :host => @lr_ip_host,
+          :agent => ipAddress
         },
         :php => {
           :server_route => identifier,
