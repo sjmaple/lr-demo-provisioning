@@ -12,134 +12,225 @@ Set up the demo environment
 
 * download and add the precise32 Vagrant box:
 
+    ```bash
     $ vagrant box add precise32 http://files.vagrantup.com/precise32.box
+    ```
 
 * start LiveRebel:
 
+    ```bash
     On Unix    $ ./bin/lr-command-center.sh run
     On Windows $ bin\lr-command-center.cmd run
+    ```
 
 * check it's running by open this URL in your browser, keep it open:
 
-    https://localhost:9001/
+    ```
+    https://localhost:9001
+    ```
 
 * provide a LiveRebel license (free or commercial)
 
 * create your first admin in LiveRebel
 
-* add a new server to LiveRebel by clicking 'add server'
+* for the next steps it's important that you have no firewall blocking incoming
+  http and https traffic to Java applications, otherwise it will not be
+  possible to connect from the virtual machines to your local LiveRebel 
+  installation
+
+Start a PHP cluster
+-------------------
+
+* in another terminal start the virtual machines, note that this takes a long
+  time since Chef will run the provisioning scripts on each virtual machine
+  and download the software that needs to be installed,
+  make sure the `lr-demo-provisioning` directory is your current directory:
+
+    ```bash
+    $ vagrant up phpcluster php1 php2
+    ```
+
+* try the different nodes out in a web browser:
+
+    ```
+    http://10.127.128.5/balancer-manager (overview of the load balancer)
+    http://10.127.128.6 (default Apache web app of node php1)
+    http://10.127.128.7 (default Apache web app of node php2)
+    ```
+
+* the PHP nodes automatically download the latest file agent from LiveRebel
+  running on your machine outside of Vagrant and start it, you should see two
+  file servers and one database server in the LiveRebel Command Center at:
+
+    ```
+    https://localhost:9001
+    ```
+
+* now you can deploy the `lr-demo-answers` PHP application through LiveRebel in
+  both configured Apache servers and the database server, these are the steps:
+
+  * install the MySQL JDBC driver for database migrations by going to the
+    `Database drivers` section in LiveRebel's `Configuration` panel,
+    you can download the driver from here:
+
+    ```
+    http://dev.mysql.com/downloads/connector/j/
+    ```
+
+  * configure the MySQL server in LiveRebel by going to the `Servers` tab and
+    clicking on `Details` next to `Database server`, these are the connection
+    details:
+
+    ```
+    Driver: MySQL
+    Host: 10.127.128.5 : 3306 / qa
+    Username: qa  Password: change_me
+    ```
+  
+  * go to the LiveRebel `Applications` tab and press the `Add Application`
+    button to upload the four versions of the PHP Answers demo application
+
+  * when the upload is finished, click the `Add Deployment` button to select
+    which version you want to deploy (start with v1.0 and upgrade through
+    the next versions later on)
+
+  * the deployment path for which the PHP servers are configured
+    is `/var/www/lr-demo-answers`, you'll have to enter that in the `Path`
+    textfield
+
+  * some application properties will not be known by LiveRebel and you will
+    not be able to deploy unless you provide suitable values, below are
+    a few example properties that will make the demo application work but
+    they need fine-tuning for the mail and Facebook sections:
+
+    ```
+    db.url=mysql:host=10.127.128.5;dbname=qa
+    db.username=qa
+    db.password=change_me
+    fb.appId=12345678901234
+    fb.appSecret=123456789012a1234567890b12234567
+    mail.host=smtp.gmail.com
+    mail.username=you@gmail.com
+    mail.password=yourpassword
+    mail.port=587
+    mail.encryption=tls
+    ```
+
+  * when the deployment is done, visit the following URL to see the
+    application running through the load balancer:
+
+    ```
+    http://10.127.128.5
+    ```
 
 Start a Tomcat cluster
 ----------------------
 
-* in another terminal start the virtual machines:
+* add a new server to LiveRebel by clicking 'add server'
 
-    $ vagrant up tomcat1
-    $ vagrant up tomcat2
-    $ vagrant up tomcatcluster
+
+* in another terminal start the virtual machines, note that this takes a long
+  time since Chef will run the provisioning scripts on each virtual machine
+  and download the software that needs to be installed,
+  make sure the `lr-demo-provisioning` directory is your current directory:
+
+    ```bash
+    $ vagrant up tomcatcluster tomcat1 tomcat2
+    ```
 
 * try the different nodes out in a web browser:
 
+    ```
     http://10.127.128.2/balancer-manager (overview of the load balancer)
     http://10.127.128.3:8080 (default Tomcat web app of node tomcat1)
     http://10.127.128.4:8080 (default Tomcat web app of node tomcat2)
+    ```
 
-* set up the `tomcat1` server for LiveRebel:
+* the Tomcat nodes automatically download the latest file agent from LiveRebel
+  running on your machine outside of Vagrant and start it, you should see two
+  file servers and one database server in the LiveRebel Command Center at:
 
-    $ vagrant ssh tomcat1
+    ```
+    https://localhost:9001
+    ```
 
-    $ sudo su -
-    $ service tomcat6 stop
+* the Tomcat service init scripts have also been modified to use the installed
+  LiveRebel agent
 
-    $ export CATALINA_BASE=/var/lib/tomcat6
-    $ export CATALINA_HOME=/usr/share/tomcat6
-    $ cd $CATALINA_BASE
+* now you can deploy the `lr-demo-answers` web application through LiveRebel in
+  both configured Tomcat servers and the database server, these are the steps:
 
-    $ wget -O lr-agent-installer.jar --no-check-certificate https://10.127.128.1:9001/public/lr-agent-installer.jar
-    $ java -DserverHome=$CATALINA_HOME -jar lr-agent-installer.jar
-    $ chown -R tomcat6:tomcat6 lr-agent
+  * install the MySQL JDBC driver for database migrations by going to the
+    `Database drivers` section in LiveRebel's `Configuration` panel,
+    you can download the driver from here:
 
-* check if the LiveRebel Command Center sees the Tomcat with the agent, however
-  use the following shell command to start Tomcat instead of what's shown in
-  the Command Center:
+    ```
+    http://dev.mysql.com/downloads/connector/j/
+    ```
 
-    $ su -s /bin/bash -c "$CATALINA_BASE/lr-agent/bin/run.sh $CATALINA_HOME/bin/catalina.sh run" tomcat6
+  * configure the MySQL server in LiveRebel by going to the `Servers` tab and
+    clicking on `Details` next to `Database server`, these are the connection
+    details:
 
-* check the LiveRebel Command Center again and you should see the server status
-  changing towards orange and finally green, you can now click the 'finish'
-  button
+    ```
+    Driver: MySQL
+    Host: 10.127.128.2 : 3306 / qa
+    Username: qa  Password: change_me
+    ```
+  
+  * go to the LiveRebel `Applications` tab and press the `Add Application`
+    button to upload the four .war versions of the Java Answers demo
+    application
 
-* press `ctrl+c` to interrupt the running Tomcat server
+  * when the upload is finished, click the `Add Deployment` button to select
+    which version you want to deploy (start with v1.0 and upgrade through
+    the next versions later on)
 
-* update the daemon `init.d` script so that the LiveRebel agent is used:
+  * some application properties will not be known by LiveRebel and you will
+    not be able to deploy unless you provide suitable values, below are
+    a few example properties that will make the demo application work but
+    they need fine-tuning for the mail and Facebook sections:
 
-    $ nano -w /etc/init.d/tomcat6
+    ```
+    db.url=jdbc:mysql://10.127.128.2:3306/qa
+    db.username=qa
+    db.password=change_me
+    fb.appId=12345678901234
+    fb.appSecret=123456789012a1234567890b12234567
+    mail.host=smtp.gmail.com
+    mail.username=you@gmail.com
+    mail.password=yourpassword
+    mail.port=587
+    mail.authenticate=true
+    mail.protocol=smtps
+    mail.startttls=true
+    ```
 
-* inside the `catalina_sh` function add `$CATALINA_BASE/lr-agent/bin/run.sh`
-  before the `$CATALINA_SH command`, for instance:
+  * when the deployment is done, visit the following URL to see the
+    application running through the load balancer:
 
-    ...
-    cd \"$CATALINA_BASE\"; \
-    \"$CATALINA_BASE/lr-agent/bin/run.sh\" \
-    \"$CATALINA_SH\" $@"
-    ...
-
-* start the tomcat service again:
-
-    $ service tomcat6 start
-
-* repeat these steps for tomcat2, except that you don't need to interact with
-  the LiveRebel Command Center anymore, it automatically picks up newly added
-  servers
-
-    $ vagrant ssh tomcat2
-    ...
-
-* now you can deploy the `lr-demo` web application through LiveRebel in both
-  configured Tomcat servers
-
-Start a PHP cluster
-----------------------
-
-* in another terminal start the virtual machines:
-
-    $ vagrant up php1
-    $ vagrant up php2
-    $ vagrant up phpcluster
-
-* try the different nodes out in a web browser:
-
-    http://10.127.128.5/balancer-manager (overview of the load balancer)
-    http://10.127.128.6 (default Apache web app of node php1)
-    http://10.127.128.7 (default Apache web app of node php2)
-
-_TODO_
+    ```
+    http://10.127.128.2/lr-demo-answers
+    ```
 
 Remarks about the provided files
 ================================
 
 * the Vagrantfile is the entry point towards the setup of this demo environment
 
-  - make sure that the configured IP addresses (`10.127.128.1`, `10.127.128.2`,
-    `10.127.128.3`, `10.127.128.4`, `10.127.128.5`,
-    `10.127.128.6`, `10.127.128.7`) aren't conflicting with hosts on your local
-    network
+  - make sure that the configured IP addresses aren't conflicting with hosts on
+    your local network, if they are, the easiest way to change them if by
+    selecting another value for the global `lr_subnet` variable. By default it
+    is set to `10.127.128`
 
-  - the Tomcat webapp context path is set to `lr-demo`, you will probably want
-    to change that if you base you own installation on these files
+  - your own machine is communicating through a dedicated host-only network with
+    the Vagrant nodes, the IP address of your machine is `10.127.128.1`
 
   - MySQL is set up with `change_me` for its passwords, you might want
     to ... change them :-)
 
-* a Tomcat super user is set up through Chef's data bags in the `tomcat_users`
-  directory, you'll most certainly want to change the password and the id for
-  production use
-
-* the Chef cookbooks prefixed with `liverebel-` have been created specifically
-  for this demo environment
+* the Chef cookbooks prefixed with `liverebel-` have been created or modified
+  specifically for this demo environment
 
 * all the other Chef cookbooks are the standard ones that can be obtained from
   http://community.opscode.com/cookbooks
-
-* the `tomcat` cookbook has a small tweak in the `server.xml.erb` template to
-  make it possible to pass in a `jvmRoute` attribute to the servlet engine

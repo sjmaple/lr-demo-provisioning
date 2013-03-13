@@ -1,0 +1,24 @@
+<VirtualHost *:80>
+        ServerAdmin <%= node['apache']['contact'] %>
+
+        RewriteEngine On
+        RewriteRule .* - [CO=BALANCEID:balancer.<%= node['php']['server_route'] %>:<%= node['php']['balance_cookie_ip'] %>]
+
+        DocumentRoot /var/www/lr-demo-answers/www/
+        <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+        </Directory>
+        <Directory /var/www/lr-demo-answers/www/>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride All
+                Order allow,deny
+                allow from all
+        </Directory>
+
+        ErrorLog <%= node['apache']['log_dir'] %>/error.log
+        LogLevel warn
+
+        CustomLog <%= node['apache']['log_dir'] %>/access.log combined
+        ServerSignature On
+</VirtualHost>
