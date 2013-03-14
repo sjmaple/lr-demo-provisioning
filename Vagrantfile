@@ -23,8 +23,12 @@ Vagrant::Config.run do |config|
       chef.add_recipe "liverebel-cluster-node"
       chef.json = {
         :liverebel => {
-          :host => @lr_ip_host,
-          :agent => @lr_ip_tomcatcluster
+          :hostip => @lr_ip_host,
+          :agentip => @lr_ip_tomcatcluster,
+          :agent => {
+            :user => 'lragent',
+            :type => 'database'
+          }
         },
         :cluster => {
           :sessionid => "JSESSIONID|jsessionid",
@@ -59,8 +63,12 @@ Vagrant::Config.run do |config|
       chef.add_recipe "liverebel-cluster-node"
       chef.json = {
         :liverebel => {
-          :host => @lr_ip_host,
-          :agent => @lr_ip_phpcluster
+          :hostip => @lr_ip_host,
+          :agentip => @lr_ip_phpcluster,
+          :agent => {
+            :user => 'lragent',
+            :type => 'database'
+          }
         },
         :cluster => {
           :sessionid => "BALANCEID",
@@ -101,8 +109,8 @@ def chef_tomcat(config, ipAddress, identifier)
     chef.add_recipe "liverebel-tomcat-node"
     chef.json = {
       :liverebel => {
-        :host => @lr_ip_host,
-        :agent => ipAddress
+        :hostip => @lr_ip_host,
+        :agentip => ipAddress
       },
       :tomcat => {
         :jvm_route => identifier
@@ -118,8 +126,13 @@ def chef_php(config, ipAddress, identifier)
     chef.add_recipe "liverebel-php-node"
     chef.json = {
         :liverebel => {
-          :host => @lr_ip_host,
-          :agent => ipAddress
+          :hostip => @lr_ip_host,
+          :agentip => ipAddress,
+          :agent => {
+            :user => 'lragent',
+            :group => 'www-data',
+            :type => 'file'
+          }
         },
         :php => {
           :server_route => identifier,

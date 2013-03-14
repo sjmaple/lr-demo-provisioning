@@ -5,7 +5,7 @@ include_recipe "phpunit"
 include_recipe "apache2"
 include_recipe "apache2::mod_php5"
 include_recipe "apache2::mod_rewrite"
-include_recipe "liverebel-file-agent"
+include_recipe "liverebel-standalone-agent"
 
 package "php5-mysql" do
   action :install
@@ -39,4 +39,10 @@ end
 execute "enable-lr-demo-answers-site" do
   command "sudo a2ensite lr-demo-answers"
   notifies :reload, resources(:service => "apache2"), :delayed
+end
+
+directory "/var/www" do
+  owner "www-data"
+  group "www-data"
+  mode 0774
 end

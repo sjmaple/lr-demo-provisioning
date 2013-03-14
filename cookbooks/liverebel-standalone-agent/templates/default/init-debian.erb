@@ -1,0 +1,193 @@
+#!/bin/sh
+#
+# /etc/init.d/lragent -- startup script for the LiveRebel agent
+#
+# Written by Miquel van Smoorenburg <miquels@cistron.nl>.
+# Modified for Debian GNU/Linux by Ian Murdock <imurdock@gnu.ai.mit.edu>.
+# Modified for Tomcat by Stefan Gybas <sgybas@debian.org>.
+# Modified for Tomcat6 by Thierry Carrez <thierry.carrez@ubuntu.com>.
+# Additional improvements by Jason Brittain <jason.brittain@mulesoft.com>.
+# Modified for oDesk server infrastructure & chef cookbook by Vlad Mikhaylov <solarvm@gmail.com>
+#
+# Originally from Ubuntu
+# Tweaked for LiveRebel agent by Geert Bevin <geert.bevin@zeroturnaround.com>.
+### BEGIN INIT INFO
+# Provides: lragent
+# Required-Start: $local_fs $remote_fs $network
+# Required-Stop: $local_fs $remote_fs $network
+# Should-Start: $named
+# Should-Stop: $named
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Start LiveRebel agent 
+# Description: Start the LiveRebel agent
+### END INIT INFO
+
+set -e
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+NAME=lragent
+DESC="LiveRebel agent"
+
+if [ `id -u` -ne 0 ]; then
+  echo "You need root privileges to run this script"
+  exit 1
+fi
+ 
+. /lib/lsb/init-functions
+
+if [ -r /etc/default/rcS ]; then
+  . /etc/default/rcS
+fi
+
+# Run Tomcat 6 as this user ID and group ID
+LRAGENT_USER=<%= @lragent_user %>
+
+# The first existing directory is used for JAVA_HOME (if JAVA_HOME is not
+# defined in $DEFAULT)
+JDK_DIRS="/usr/lib/jvm/java-6-openjdk /usr/lib/jvm/java-6-sun /usr/lib/jvm/java-1.5.0-sun /usr/lib/j2sdk1.5-sun /usr/lib/j2sdk1.5-ibm"
+
+# Look for the right JVM to use
+for jdir in $JDK_DIRS; do
+  if [ -r "$jdir/bin/java" -a -z "${JAVA_HOME}" ]; then
+    JAVA_HOME="$jdir"
+  fi
+done
+export JAVA_HOME
+
+# Directory where the LiveRebel agent distribution resides
+LRAGENT_HOME=<%= @lragent_home %>
+
+if [ ! -f "$LRAGENT_HOME/bin/agent.sh" ]; then
+  log_failure_msg "$NAME is not installed"
+  exit 1
+fi
+
+# Define other required variables
+LRAGENT_PID="/var/run/$NAME.pid"
+LRAGENT_SH="\"$LRAGENT_HOME/bin/agent.sh\" & echo \$! > \"$LRAGENT_PID\""
+
+lragent_sh() {
+  # Define the command to run LiveRebel's agent.sh as a daemon
+  # set -a tells sh to export assigned variables to spawned shells.
+  LRAGENT_SH="set -a; JAVA_HOME=\"$JAVA_HOME\"; \
+    LRAGENT_HOME=\"$LRAGENT_HOME\"; \
+    LRAGENT_PID=\"$LRAGENT_PID\"; \
+    cd \"$LRAGENT_HOME\"; \
+    $LRAGENT_SH"
+
+  # Run the script as a daemon
+  set +e
+  touch "$LRAGENT_PID"
+  chown $LRAGENT_USER "$LRAGENT_PID"
+  start-stop-daemon --start -b -u "$LRAGENT_USER" \
+    -c "$LRAGENT_USER" -x /bin/bash -- -c "$LRAGENT_SH"
+  status="$?"
+  set +a -e
+  return $status
+}
+
+case "$1" in
+  start)
+    if [ -z "$JAVA_HOME" ]; then
+      log_failure_msg "no JDK found - please set JAVA_HOME"
+      exit 1
+    fi
+
+    if [ ! -d "$LRAGENT_HOME/conf" ]; then
+      log_failure_msg "invalid LRAGENT_HOME: $LRAGENT_HOME"
+      exit 1
+    fi
+
+    log_daemon_msg "Starting $DESC"
+
+    if start-stop-daemon --test --start --pidfile "$LRAGENT_PID" \
+      --user $LRAGENT_USER --exec "$JAVA_HOME/bin/java" \
+      >/dev/null; then
+
+      lragent_sh
+      sleep 3 
+      
+      if start-stop-daemon --test --start --pidfile "$LRAGENT_PID" \
+        --user $LRAGENT_USER --exec "$JAVA_HOME/bin/java" \
+        >/dev/null; then
+
+        if [ -f "$LRAGENT_PID" ]; then
+          rm -f "$LRAGENT_PID"
+        fi
+
+        log_end_msg 1
+      else
+        log_end_msg 0
+      fi
+
+    else
+      log_progress_msg "(already running)"
+      log_end_msg 0
+    fi
+    ;;
+  stop)
+    log_daemon_msg "Stopping $DESC"
+
+    set +e
+    if [ -f "$LRAGENT_PID" ]; then
+
+      start-stop-daemon --stop --pidfile "$LRAGENT_PID" \
+        --user "$LRAGENT_USER" \
+        --retry=TERM/20/KILL/5 >/dev/null
+
+      if [ $? -eq 1 ]; then
+        log_progress_msg "$DESC is not running but pid file exists, cleaning up"
+      elif [ $? -eq 3 ]; then
+        PID="`cat $LRAGENT_PID`"
+        log_failure_msg "Failed to stop $NAME (pid $PID)"
+        exit 1
+      fi
+
+      rm -f "$LRAGENT_PID"
+    else
+      log_progress_msg "(not running)"
+    fi
+    log_end_msg 0
+    set -e
+    ;;
+   status)
+    set +e
+    start-stop-daemon --test --start --pidfile "$LRAGENT_PID" \
+      --user $LRAGENT_USER --exec "$JAVA_HOME/bin/java" \
+      >/dev/null 2>&1
+
+    if [ "$?" = "0" ]; then
+      if [ -f "$LRAGENT_PID" ]; then
+        log_success_msg "$DESC is not running, but pid file exists."
+        exit 1
+      else
+        log_success_msg "$DESC is not running."
+        exit 3
+      fi
+    else
+      log_success_msg "$DESC is running with pid `cat $LRAGENT_PID`"
+    fi
+    set -e
+    ;;
+  restart|force-reload)
+    if [ -f "$LRAGENT_PID" ]; then
+      $0 stop
+      sleep 1
+    fi
+    $0 start
+   ;;
+  try-restart)
+    if start-stop-daemon --test --start --pidfile "$LRAGENT_PID" \
+      --user $LRAGENT_USER --exec "$JAVA_HOME/bin/java" \
+      >/dev/null; then
+
+      $0 start
+    fi
+    ;;
+  *)
+    log_success_msg "Usage: $0 {start|stop|restart|try-restart|force-reload|status}"
+    exit 1
+;;
+esac
+

@@ -1,7 +1,7 @@
 include_recipe "openssl"
 include_recipe "apt"
 include_recipe "java"
-include_recipe "liverebel-database-agent"
+include_recipe "liverebel-standalone-agent"
 include_recipe "mysql::server"
 include_recipe "database::mysql"
 
