@@ -18,6 +18,17 @@ end
 phpch = php_pear_channel "pear.phpunit.de" do
   action :discover
 end
+
+php_pear "PHPUnit_Story" do
+  channel phpch.channel_name
+  action :install
+end
+
+php_pear "DbUnit" do
+  channel phpch.channel_name
+  action :install
+end
+
 php_pear "PHPUnit_Selenium" do
   channel phpch.channel_name
   action :install
