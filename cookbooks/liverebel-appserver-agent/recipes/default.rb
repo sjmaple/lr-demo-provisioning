@@ -1,6 +1,9 @@
+tc7user = node["tomcat7"]["user"]
+tc7group = node["tomcat7"]["group"]
+tc7home = node["tomcat7"]["home"]
 agent_installer_jar = "lr-agent-installer.jar"
-agent_installer_jar_path = "/usr/share/tomcat/#{agent_installer_jar}"
-agent_installed_path = "/usr/share/tomcat/lr-agent"
+agent_installer_jar_path = "#{tc7home}/#{agent_installer_jar}"
+agent_installed_path = "#{tc7home}/lr-agent"
 
 ruby_block 'update-agent-properties' do
   action :nothing
@@ -12,8 +15,9 @@ ruby_block 'update-agent-properties' do
 end
 
 execute "install-appserver-agent" do
-  cwd "/usr/share/tomcat/"
-  user "tomcat"
+  cwd tc7home
+  user tc7user
+  group tc7group
   command "/usr/bin/java -Dliverebel.host=#{node['liverebel']['hostip']} -jar #{agent_installer_jar_path}"
   action :nothing
   notifies :create, "ruby_block[update-agent-properties]", :immediately
@@ -24,7 +28,8 @@ end
 
 remote_file agent_installer_jar_path do
   source "https://#{node['liverebel']['hostip']}:9001/public/#{agent_installer_jar}"
-  owner "tomcat"
+  owner tc7user
+  group tc7group
   mode 00644
   notifies :run, "execute[install-appserver-agent]", :immediately
   not_if do

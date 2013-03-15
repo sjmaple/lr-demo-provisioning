@@ -16,13 +16,7 @@ tc7url = "http://archive.apache.org/dist/tomcat/tomcat-7/v#{tc7ver}/bin/#{tc7tar
 tc7target = node["tomcat7"]["target"]
 tc7user = node["tomcat7"]["user"]
 tc7group = node["tomcat7"]["group"]
-
-# Get the tomcat binary 
-remote_file "/tmp/#{tc7tarball}" do
-    source "#{tc7url}"
-    mode "0644"
-	action :create
-end
+tc7install = "#{tc7target}/apache-tomcat-#{tc7ver}"
 
 # Create group
 group "#{tc7group}" do
@@ -40,21 +34,32 @@ user "#{tc7user}" do
 end
 
 # Create base folder
-directory "#{tc7target}/apache-tomcat-#{tc7ver}" do
+directory tc7install do
     owner "#{tc7user}"
     group "#{tc7group}"
     mode "0755"
     action :create
 end
 
-# Extract
+# Get the tomcat binary 
+remote_file "/tmp/#{tc7tarball}" do
+    source "#{tc7url}"
+    mode "0644"
+    action :create
+    notifies :run, "execute[tar]", :immediately
+    not_if do
+        File.exists?("#{tc7install}/conf")
+    end
+end
+
+# Extractd
 execute "tar" do
     user "#{tc7user}"
     group "#{tc7group}"
     installation_dir = "#{tc7target}"
     cwd installation_dir
     command "tar zxf /tmp/#{tc7tarball}"
-    action :run
+    action :nothing
 end
 
 # Set the symlink
@@ -67,16 +72,16 @@ end
 case node["platform"]
 when "debian","ubuntu"
     template "/etc/init.d/tomcat7" do
-		source "init-debian.erb"
-		owner "root"
-		group "root"
-		mode "0755"
+        source "init-debian.erb"
+        owner "root"
+        group "root"
+        mode "0755"
     end
-	execute "init-deb" do
-		user "root"
-		group "root"
-		command "update-rc.d tomcat7 defaults"
-		action :run
+    execute "init-deb" do
+        user "root"
+        group "root"
+        command "update-rc.d tomcat7 defaults"
+        action :run
     end
 end
 
