@@ -135,8 +135,7 @@ def chef_php(config, ipAddress, identifier)
           }
         },
         :php => {
-          :server_route => identifier,
-          :balance_cookie_ip => @lr_ip_phpcluster
+          :server_route => identifier
         },
         :phpunit => {
           :install_method => "pear",

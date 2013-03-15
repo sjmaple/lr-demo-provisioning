@@ -2,7 +2,10 @@
         ServerAdmin <%= node['apache']['contact'] %>
 
         RewriteEngine On
-        RewriteRule .* - [CO=BALANCEID:balancer.<%= node['php']['server_route'] %>:<%= node['php']['balance_cookie_ip'] %>]
+        RewriteCond %{HTTP_HOST} ^.*\.liverebel\.com$
+        RewriteRule .* - [CO=BALANCEID:balancer.<%= node['php']['server_route'] %>:.liverebel.com]
+        RewriteCond %{HTTP_HOST} ^([\d\.]+)$
+        RewriteRule .* - [CO=BALANCEID:balancer.<%= node['php']['server_route'] %>:%1]
 
         DocumentRoot /var/www/lr-demo-answers/www/
         <Directory />

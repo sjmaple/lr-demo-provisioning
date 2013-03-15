@@ -38,6 +38,21 @@ Set up the demo environment
   possible to connect from the virtual machines to your local LiveRebel 
   installation
 
+* if you want to use the Facebook login feature of the demo applications, you
+  will need to add the following entries to your local host name database,
+  on Unix-based systems you can simply add these lines to the /etc/hosts file
+  of the machine on which you're using the web browser:
+
+    ```
+    10.127.128.1 host.answers.liverebel.com
+    10.127.128.2 java.answers.liverebel.com
+    10.127.128.3 java1.answers.liverebel.com
+    10.127.128.4 java2.answers.liverebel.com
+    10.127.128.5 php.answers.liverebel.com
+    10.127.128.6 php1.answers.liverebel.com
+    10.127.128.7 php2.answers.liverebel.com
+    ```
+
 Start a PHP cluster
 -------------------
 
@@ -222,6 +237,10 @@ Remarks about the provided files
     your local network, if they are, the easiest way to change them if by
     selecting another value for the global `lr_subnet` variable. By default it
     is set to `10.127.128`
+
+  - if you change the configured IP addresses, make sure to also adapt the
+    entries in your local hosts database in case you added the mappings that
+    were shown at the beginning of the readme
 
   - your own machine is communicating through a dedicated host-only network with
     the Vagrant nodes, the IP address of your machine is `10.127.128.1`
