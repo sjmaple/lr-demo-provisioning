@@ -138,8 +138,8 @@ Start a PHP cluster
     http://10.127.128.5
     ```
 
-    if you set up the hosts database entries for Facebook login, you can
-    also visit:
+  * if you set up the hosts database entries, you can visit the following
+    address instead and will be able to use the Facebook login feature:
 
     ```
     http://php.answers.liverebel.com
@@ -236,8 +236,8 @@ Start a Tomcat cluster
     http://10.127.128.2/lr-demo-answers-java
     ```
 
-    if you set up the hosts database entries for Facebook login, you can
-    also visit:
+  * if you set up the hosts database entries, you can visit the following
+    address instead and will be able to use the Facebook login feature:
 
     ```
     http://java.answers.liverebel.com/lr-demo-answers-java
