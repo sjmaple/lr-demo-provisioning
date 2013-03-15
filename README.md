@@ -138,6 +138,13 @@ Start a PHP cluster
     http://10.127.128.5
     ```
 
+    if you set up the hosts database entries for Facebook login, you can
+    also visit:
+
+    ```
+    http://php.answers.liverebel.com
+    ```
+
 Start a Tomcat cluster
 ----------------------
 
@@ -172,8 +179,9 @@ Start a Tomcat cluster
 * the Tomcat service init scripts have also been modified to use the installed
   LiveRebel agent
 
-* now you can deploy the `lr-demo-answers` web application through LiveRebel in
-  both configured Tomcat servers and the database server, these are the steps:
+* now you can deploy the `lr-demo-answers-java` web application through
+  LiveRebel in both configured Tomcat servers and the database server, these
+  are the steps:
 
   * install the MySQL JDBC driver for database migrations by going to the
     `Database drivers` section in LiveRebel's `Configuration` panel,
@@ -225,8 +233,16 @@ Start a Tomcat cluster
     application running through the load balancer:
 
     ```
-    http://10.127.128.2/lr-demo-answers
+    http://10.127.128.2/lr-demo-answers-java
     ```
+
+    if you set up the hosts database entries for Facebook login, you can
+    also visit:
+
+    ```
+    http://java.answers.liverebel.com/lr-demo-answers-java
+    ```
+
 
 Remarks about the provided files
 ================================
