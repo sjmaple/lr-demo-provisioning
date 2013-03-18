@@ -20,31 +20,15 @@ Vagrant::Config.run do |config|
     config.vm.network :hostonly, @lr_ip_tomcatcluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
-      chef.add_recipe "liverebel-cluster-node"
-      chef.json = {
-        :liverebel => {
-          :hostip => @lr_ip_host,
-          :agentip => @lr_ip_tomcatcluster,
-          :agent => {
-            :user => 'lragent',
-            :type => 'database'
-          }
-        },
+      chef_cluster_config(chef, @lr_ip_tomcatcluster)
+      chef.json.deep_merge!({
         :cluster => {
           :sessionid => "JSESSIONID|jsessionid",
           :nodeport => 8080,
           :scolonpathdelim => true,
           :nodes => [@lr_ip_tomcat1, @lr_ip_tomcat2]
-        },
-        :mysql => {
-          :bind_address => @lr_ip_tomcatcluster,
-          :allow_remote_root => true,
-          :server_user_password => "change_me",
-          :server_root_password => "change_me",
-          :server_repl_password => "change_me",
-          :server_debian_password => "change_me"
         }
-      }
+      })
     end
   end
 
@@ -60,30 +44,14 @@ Vagrant::Config.run do |config|
     config.vm.network :hostonly, @lr_ip_phpcluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
-      chef.add_recipe "liverebel-cluster-node"
-      chef.json = {
-        :liverebel => {
-          :hostip => @lr_ip_host,
-          :agentip => @lr_ip_phpcluster,
-          :agent => {
-            :user => 'lragent',
-            :type => 'database'
-          }
-        },
+      chef_cluster_config(chef, @lr_ip_phpcluster)
+      chef.json.deep_merge!({
         :cluster => {
           :sessionid => "BALANCEID",
           :nodeport => 80,
           :nodes => [@lr_ip_php1, @lr_ip_php2]
-        },
-        :mysql => {
-          :bind_address => @lr_ip_phpcluster,
-          :allow_remote_root => true,
-          :server_user_password => "change_me",
-          :server_root_password => "change_me",
-          :server_repl_password => "change_me",
-          :server_debian_password => "change_me"
         }
-      }
+      })
     end
   end
 
@@ -102,20 +70,68 @@ def chef_config(chef)
   chef.roles_path = "roles"
 end
 
+def chef_cluster_config(chef, ipAddress)
+  chef.add_recipe "liverebel-cluster-node"
+  chef.json.deep_merge!({
+    :liverebel => {
+      :hostip => @lr_ip_host,
+      :agentip => ipAddress,
+      :agent => {
+        :user => 'lragent',
+        :type => 'database'
+      }
+    },
+    :mysql => {
+      :bind_address => ipAddress,
+      :allow_remote_root => true,
+      :server_user_password => "change_me",
+      :server_root_password => "change_me",
+      :server_repl_password => "change_me",
+      :server_debian_password => "change_me"
+    }
+  })
+end
+
+def chef_tomcat_config(chef, ipAddress, identifier)
+  chef.add_recipe "liverebel-tomcat-node"
+  chef.json.deep_merge!({
+    :liverebel => {
+      :hostip => @lr_ip_host,
+      :agentip => ipAddress
+    },
+    :tomcat => {
+      :jvm_route => identifier
+    }
+  })
+end
+
+def chef_php_config(chef, ipAddress, identifier)
+  chef.add_recipe "liverebel-php-node"
+  chef.json.deep_merge!({
+    :liverebel => {
+      :hostip => @lr_ip_host,
+      :agentip => ipAddress,
+      :agent => {
+        :user => 'lragent',
+        :group => 'www-data',
+        :type => 'file'
+      }
+    },
+    :php => {
+      :server_route => identifier
+    },
+    :phpunit => {
+      :install_method => "pear",
+      :version => "3.7.14"
+    }
+  })
+end
+
 def chef_tomcat(config, ipAddress, identifier)
   config.vm.network :hostonly, ipAddress
   config.vm.provision :chef_solo do |chef|
     chef_config(chef)
-    chef.add_recipe "liverebel-tomcat-node"
-    chef.json = {
-      :liverebel => {
-        :hostip => @lr_ip_host,
-        :agentip => ipAddress
-      },
-      :tomcat => {
-        :jvm_route => identifier
-      }
-    }
+    chef_tomcat_config(chef, ipAddress, identifier)
   end
 end
 
@@ -123,24 +139,24 @@ def chef_php(config, ipAddress, identifier)
   config.vm.network :hostonly, ipAddress
   config.vm.provision :chef_solo do |chef|
     chef_config(chef)
-    chef.add_recipe "liverebel-php-node"
-    chef.json = {
-        :liverebel => {
-          :hostip => @lr_ip_host,
-          :agentip => ipAddress,
-          :agent => {
-            :user => 'lragent',
-            :group => 'www-data',
-            :type => 'file'
-          }
-        },
-        :php => {
-          :server_route => identifier
-        },
-        :phpunit => {
-          :install_method => "pear",
-          :version => "3.7.14"
-        }
-      }
+    chef_php_config(chef, ipAddress, identifier)
+  end
+end
+
+class Hash
+  def deep_merge(other_hash, &block)
+    dup.deep_merge!(other_hash, &block)
+  end
+
+  def deep_merge!(other_hash, &block)
+    other_hash.each_pair do |k,v|
+      tv = self[k]
+      if tv.is_a?(Hash) && v.is_a?(Hash)
+        self[k] = tv.deep_merge(v, &block)
+      else
+        self[k] = block && tv ? block.call(k, tv, v) : v
+      end
+    end
+    self
   end
 end
