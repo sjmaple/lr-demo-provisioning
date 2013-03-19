@@ -167,7 +167,7 @@ Start a Tomcat cluster
 
 * the Tomcat nodes automatically download the latest file agent from LiveRebel
   running on your machine outside of Vagrant and start it, you should see two
-  file servers and one database server in the LiveRebel Command Center at:
+  application servers and one database server in the LiveRebel Command Center at:
 
     ```
     https://localhost:9001
