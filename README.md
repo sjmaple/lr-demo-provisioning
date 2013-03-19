@@ -98,8 +98,8 @@ Start a PHP cluster
 
     ```
     Driver: MySQL
-    Host: 10.127.128.5 : 3306 / qa
-    Username: qa  Password: change_me
+    Host: 10.127.128.5 : 3306 / answers
+    Username: answers  Password: change_me
     ```
   
   * go to the LiveRebel `Applications` tab and press the `Add Application`
@@ -119,8 +119,8 @@ Start a PHP cluster
     they need fine-tuning for the mail and Facebook sections:
 
     ```
-    db.url=mysql:host=10.127.128.5;dbname=qa
-    db.username=qa
+    db.url=mysql:host=10.127.128.5;dbname=answers
+    db.username=answers
     db.password=change_me
     fb.appId=12345678901234
     fb.appSecret=123456789012a1234567890b12234567
@@ -197,8 +197,8 @@ Start a Tomcat cluster
 
     ```
     Driver: MySQL
-    Host: 10.127.128.2 : 3306 / qa
-    Username: qa  Password: change_me
+    Host: 10.127.128.2 : 3306 / answers
+    Username: answers  Password: change_me
     ```
   
   * go to the LiveRebel `Applications` tab and press the `Add Application`
@@ -215,8 +215,8 @@ Start a Tomcat cluster
     they need fine-tuning for the mail and Facebook sections:
 
     ```
-    db.url=jdbc:mysql://10.127.128.2:3306/qa
-    db.username=qa
+    db.url=jdbc:mysql://10.127.128.2:3306/answers
+    db.username=answers
     db.password=change_me
     fb.appId=12345678901234
     fb.appSecret=123456789012a1234567890b12234567
