@@ -23,6 +23,7 @@ Vagrant::Config.run do |config|
     config.vm.network :hostonly, @lr_ip_tomcatcluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
+      chef.add_recipe "liverebel-cluster-node"
       chef_cluster_config(chef, @lr_ip_tomcatcluster)
       chef.json.deep_merge!({
         :cluster => {
@@ -47,6 +48,7 @@ Vagrant::Config.run do |config|
     config.vm.network :hostonly, @lr_ip_phpcluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
+      chef.add_recipe "liverebel-cluster-node"
       chef_cluster_config(chef, @lr_ip_phpcluster)
       chef.json.deep_merge!({
         :cluster => {
@@ -70,6 +72,7 @@ Vagrant::Config.run do |config|
     config.vm.network :hostonly, @lr_ip_compositecluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
+      chef.add_recipe "liverebel-compositecluster-node"
       chef_cluster_config(chef, @lr_ip_compositecluster)
       chef.json.deep_merge!({
         :cluster => {
@@ -99,7 +102,6 @@ def chef_config(chef)
 end
 
 def chef_cluster_config(chef, ipAddress)
-  chef.add_recipe "liverebel-cluster-node"
   chef.json.deep_merge!({
     :liverebel => {
       :hostip => @lr_ip_host,
