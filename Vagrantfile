@@ -9,6 +9,9 @@
 @lr_ip_phpcluster = "#{@lr_subnet}.5"
 @lr_ip_php1 = "#{@lr_subnet}.6"
 @lr_ip_php2 = "#{@lr_subnet}.7"
+@lr_ip_combinedcluster = "#{@lr_subnet}.8"
+@lr_ip_tomcatphp1 = "#{@lr_subnet}.9"
+@lr_ip_tomcatphp2 = "#{@lr_subnet}.10"
 
 Vagrant::Config.run do |config|
   config.vm.box = "precise32"
@@ -61,6 +64,14 @@ Vagrant::Config.run do |config|
 
   config.vm.define :php2 do |config|
     chef_php(config, @lr_ip_php2, 2)
+  end
+
+  config.vm.define :tomcatphp1 do |config|
+    chef_tomcatphp(config, @lr_ip_tomcatphp1, 1)
+  end
+
+  config.vm.define :tomcatphp2 do |config|
+    chef_tomcatphp(config, @lr_ip_tomcatphp2, 2)
   end
 end
 
@@ -140,6 +151,15 @@ def chef_php(config, ipAddress, identifier)
   config.vm.provision :chef_solo do |chef|
     chef_config(chef)
     chef_php_config(chef, ipAddress, identifier)
+  end
+end
+
+def chef_tomcatphp(config, ipAddress, identifier)
+  config.vm.network :hostonly, ipAddress
+  config.vm.provision :chef_solo do |chef|
+    chef_config(chef)
+    chef_php_config(chef, ipAddress, identifier)
+    chef_tomcat_config(chef, ipAddress, identifier)
   end
 end
 
