@@ -59,3 +59,15 @@ attribute "hosts/php2",
   :description => "IP address of the php2 node",
   :type => "string",
   :required => "required"
+
+attribute "hosts/composite1",
+  :display_name => "composite1 IP",
+  :description => "IP address of the composite1 node",
+  :type => "string",
+  :required => "optional"
+
+attribute "hosts/composite2",
+  :display_name => "composite2 IP",
+  :description => "IP address of the composite2 node",
+  :type => "string",
+  :required => "optional"

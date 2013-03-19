@@ -27,3 +27,15 @@ hostsfile_entry "#{node["hosts"]["php2"]}" do
   hostname  'php2.answers.liverebel.com'
   action    :append
 end
+if node["hosts"]["composite1"]
+  hostsfile_entry "#{node["hosts"]["composite1"]}" do
+    hostname  'composite1.answers.liverebel.com'
+    action    :append
+  end
+end
+if node["hosts"]["composite2"]
+  hostsfile_entry "#{node["hosts"]["composite2"]}" do
+    hostname  'composite2.answers.liverebel.com'
+    action    :append
+  end
+end
