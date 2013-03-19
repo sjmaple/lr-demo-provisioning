@@ -82,7 +82,7 @@ def chef_hosts_config(chef)
       :java2 => @lr_ip_tomcat2,
       :php => @lr_ip_phpcluster,
       :php1 => @lr_ip_php1,
-      :php2 => @lr_ip_php2,
+      :php2 => @lr_ip_php2
     }
   })
 end
