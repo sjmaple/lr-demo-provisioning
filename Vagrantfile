@@ -20,6 +20,7 @@ Vagrant::Config.run do |config|
     config.vm.network :hostonly, @lr_ip_tomcatcluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
+      chef_hosts_config(chef)
       chef_cluster_config(chef, @lr_ip_tomcatcluster)
       chef.json.deep_merge!({
         :cluster => {
@@ -44,6 +45,7 @@ Vagrant::Config.run do |config|
     config.vm.network :hostonly, @lr_ip_phpcluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
+      chef_hosts_config(chef)
       chef_cluster_config(chef, @lr_ip_phpcluster)
       chef.json.deep_merge!({
         :cluster => {
@@ -68,6 +70,21 @@ def chef_config(chef)
   chef.cookbooks_path = "cookbooks"
   chef.data_bags_path = "data_bags"
   chef.roles_path = "roles"
+end
+
+def chef_hosts_config(chef)
+  chef.add_recipe "liverebel-hosts"
+  chef.json.deep_merge!({
+    :hosts => {
+      :host => @lr_ip_host,
+      :java => @lr_ip_tomcatcluster,
+      :java1 => @lr_ip_tomcat1,
+      :java2 => @lr_ip_tomcat2,
+      :php => @lr_ip_phpcluster,
+      :php1 => @lr_ip_php1,
+      :php2 => @lr_ip_php2,
+    }
+  })
 end
 
 def chef_cluster_config(chef, ipAddress)
@@ -131,6 +148,7 @@ def chef_tomcat(config, ipAddress, identifier)
   config.vm.network :hostonly, ipAddress
   config.vm.provision :chef_solo do |chef|
     chef_config(chef)
+    chef_hosts_config(chef)
     chef_tomcat_config(chef, ipAddress, identifier)
   end
 end
@@ -139,6 +157,7 @@ def chef_php(config, ipAddress, identifier)
   config.vm.network :hostonly, ipAddress
   config.vm.provision :chef_solo do |chef|
     chef_config(chef)
+    chef_hosts_config(chef)
     chef_php_config(chef, ipAddress, identifier)
   end
 end
