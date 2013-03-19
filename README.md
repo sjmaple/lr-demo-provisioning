@@ -148,9 +148,6 @@ Start a PHP cluster
 Start a Tomcat cluster
 ----------------------
 
-* add a new server to LiveRebel by clicking 'add server'
-
-
 * in another terminal start the virtual machines, note that this takes a long
   time since Chef will run the provisioning scripts on each virtual machine
   and download the software that needs to be installed,
@@ -170,7 +167,7 @@ Start a Tomcat cluster
 
 * the Tomcat nodes automatically download the latest file agent from LiveRebel
   running on your machine outside of Vagrant and start it, you should see two
-  file servers and one database server in the LiveRebel Command Center at:
+  application servers and one database server in the LiveRebel Command Center at:
 
     ```
     https://localhost:9001
