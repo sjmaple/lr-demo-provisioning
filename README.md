@@ -81,7 +81,7 @@ Start a PHP cluster
     https://localhost:9001
     ```
 
-* now you can deploy the `lr-demo-answers` PHP application through LiveRebel in
+* now you can deploy the `lr-demo-answers-php` PHP application through LiveRebel in
   both configured Apache servers and the database server, these are the steps:
 
   * install the MySQL JDBC driver for database migrations by going to the
