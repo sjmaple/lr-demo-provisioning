@@ -326,9 +326,12 @@ Start a composite cluster
     the next versions later on)
 
   * some application properties will not be known by LiveRebel and you will
-    not be able to deploy unless you provide suitable values, below are
-    a few example properties that will make the demo application work but
-    they need fine-tuning for the mail and Facebook sections:
+    not be able to deploy unless you provide suitable values. Note that since
+    you're going to manage two different applications in LiveRebel, you'll have
+    to put the Tomcat application servers into a dedicated server group to be
+    able to provide these properties independenly.
+    Below are a few example properties that will make the demo application work
+    but they need fine-tuning for the mail and Facebook sections:
 
     ```
     db.url=jdbc:mysql://10.127.128.8:3306/answers_java
@@ -377,9 +380,12 @@ Start a composite cluster
     textfield
 
   * some application properties will not be known by LiveRebel and you will
-    not be able to deploy unless you provide suitable values, below are
-    a few example properties that will make the demo application work but
-    they need fine-tuning for the mail and Facebook sections:
+    not be able to deploy unless you provide suitable values. Note that since
+    you're going to manage two different applications in LiveRebel, you'll have
+    to put the file servers into a dedicated server group to be
+    able to provide these properties independenly.
+    Below are a few example properties that will make the demo application work
+    but they need fine-tuning for the mail and Facebook sections:
 
     ```
     db.url=mysql:host=10.127.128.8;dbname=answers_php
