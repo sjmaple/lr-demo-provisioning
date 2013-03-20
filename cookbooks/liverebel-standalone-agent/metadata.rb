@@ -10,6 +10,8 @@ recipe            "liverebel-standalone-agent", "LiveRebel standalone agent"
   supports os
 end
 
+depends "liverebel-sshkey"
+
 attribute "liverebel",
   :display_name => "liverebel configuration",
   :description => "Hash of LiveRebel configuration parameters",

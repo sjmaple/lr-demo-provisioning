@@ -22,7 +22,7 @@ selenium_installed_path = "#{tc7home}/selenium-2.31.0"
 execute "install-selenium" do
   cwd tc7home
   user tc7user
-  group "#{tc7group}"
+  group tc7group
   command "jar xvf #{selenium_zip}"
   action :nothing
   not_if do
@@ -33,7 +33,7 @@ end
 remote_file selenium_zip_path do
   source "http://selenium.googlecode.com/files/#{selenium_zip}"
   owner tc7user
-  group "#{tc7group}"
+  group tc7group
   mode 00644
   notifies :run, "execute[install-selenium]", :immediately
   not_if do
@@ -50,7 +50,7 @@ jboss_logging_jar_path = "#{tc7home}/lib/#{jboss_logging_jar}"
 remote_file jboss_logging_jar_path do
   source "http://repo1.maven.org/maven2/org/jboss/logging/jboss-logging/#{jboss_logging_version}/#{jboss_logging_jar}"
   owner tc7user
-  group "#{tc7group}"
+  group tc7group
   mode 00644
   not_if do
     File.exists?(jboss_logging_jar_path)
@@ -66,15 +66,23 @@ commons_logging_jar_path = "#{tc7home}/lib/#{commons_logging_jar}"
 remote_file commons_logging_jar_path do
   source "http://repo1.maven.org/maven2/commons-logging/commons-logging/#{commons_logging_version}/#{commons_logging_jar}"
   owner tc7user
-  group "#{tc7group}"
+  group tc7group
   mode 00644
   not_if do
     File.exists?(commons_logging_jar_path)
   end
 end
 
+# start the tomcat service
 
 service "tomcat7" do
     service_name "tomcat7"
     action :start
+end
+
+# install the vagrant private ssh key
+
+vagrant_sshkey tc7home do
+  owner tc7user
+  group tc7group
 end
