@@ -162,7 +162,8 @@ def chef_tomcat_config(chef, ipAddress, identifier)
   chef.json.deep_merge!({
     :liverebel => {
       :hostip => @lr_ip_host,
-      :agentip => ipAddress
+      :agentip => ipAddress,
+      :tunnelport => 18080+identifier
     },
     :tomcat => {
       :jvm_route => identifier
