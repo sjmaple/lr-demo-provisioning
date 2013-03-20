@@ -3,7 +3,7 @@ Set up the demo environment
 
 * download and install LiveRebel: http://zeroturnaround.com/liverebel
 * download and install Oracle VirtualBox: https://www.virtualbox.org
-* download and install Vagrant : http://www.vagrantup.com
+* download and install Vagrant (at least v1.1) : http://www.vagrantup.com
 
 * note that when using Vagrant 1.0.6 on Windows with Cygwin, there's a known bug
   regarding Unix type paths and Windows paths. This forum posts gives an easy
