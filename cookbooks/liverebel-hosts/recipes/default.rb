@@ -20,6 +20,16 @@ end
 hostsfile_entry "#{node["hosts"]["php2"]}" do
   action    :remove
 end
+if node["hosts"]["composite1"]
+  hostsfile_entry "#{node["hosts"]["composite1"]}" do
+    action    :remove
+  end
+end
+if node["hosts"]["composite2"]
+  hostsfile_entry "#{node["hosts"]["composite2"]}" do
+    action    :remove
+  end
+end
 
 # add latest versions for the hosts
 hostsfile_entry "#{node["hosts"]["host"]}" do
