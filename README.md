@@ -254,7 +254,7 @@ Start a composite cluster
     ```
 
 * you have to add the following entries to your local host name database
-  on Unix-based systems you can simply add these lines to the /etc/hosts file
+  on Unix-based systems you can simply add these lines to the `/etc/hosts` file
   of the machine on which you're using the web browser:
 
     ```
@@ -285,7 +285,7 @@ Start a composite cluster
 
 * all the nodes automatically download the latest file agent from LiveRebel
   running on your machine outside of Vagrant and start it, you should see two
-  file servers, to application servers and one database server in the
+  file servers, two application servers and one database server in the
   LiveRebel Command Center at:
 
     ```
