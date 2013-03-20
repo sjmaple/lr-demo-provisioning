@@ -1,3 +1,5 @@
+include_recipe "liverebel-sshkey"
+
 standalone_agent_user = node['liverebel']['agent']['user']
 standalone_agent_group = node['liverebel']['agent']['group']
 standalone_agent_type = node['liverebel']['agent']['type']
@@ -71,4 +73,11 @@ end
 service "lragent" do
     service_name "lragent"
     action :start
+end
+
+# install the vagrant private ssh key
+
+vagrant_sshkey standalone_agent_user_home do
+  owner standalone_agent_user
+  group standalone_agent_group
 end
