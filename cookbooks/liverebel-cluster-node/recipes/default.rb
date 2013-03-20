@@ -2,6 +2,7 @@ gem_package "vagrant-vbguest" do
   action :install
 end
 
+include_recipe "liverebel-sshkey"
 include_recipe "openssl"
 include_recipe "apt"
 include_recipe "java"

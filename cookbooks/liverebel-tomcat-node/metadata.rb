@@ -13,4 +13,5 @@ end
 depends "apt"
 depends "java"
 depends "liverebel-appserver-agent"
+depends "liverebel-sshkey"
 depends "liverebel-tomcat7"
