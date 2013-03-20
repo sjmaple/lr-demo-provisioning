@@ -73,7 +73,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define :compositecluster do |config|
-    config.vm.network :hostonly, @lr_ip_compositecluster
+    config.vm.network :private_network, ip: @lr_ip_compositecluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
       chef_hosts_config_composite(chef)
@@ -214,7 +214,7 @@ def chef_php(config, ipAddress, identifier)
 end
 
 def chef_composite(config, ipAddress, identifier)
-  config.vm.network :hostonly, ipAddress
+  config.vm.network :private_network, ip: ipAddress
   config.vm.provision :chef_solo do |chef|
     chef_config(chef)
     chef_hosts_config_composite(chef)
