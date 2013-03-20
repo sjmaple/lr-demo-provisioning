@@ -39,9 +39,9 @@ Set up the demo environment
   installation
 
 * if you want to use the Facebook login feature of the demo applications, you
-  will need to add the following entries to your local host name database,
-  on Unix-based systems you can simply add these lines to the /etc/hosts file
-  of the machine on which you're using the web browser:
+  will need to add the following entries to your local host name database
+  (Unix/Linux: `/etc/hosts`; Windows: `C:\Windows\System32\drivers\etc`)
+  on the machine on which you're using the web browser:
 
     ```
     10.127.128.1 host.answers.liverebel.com
