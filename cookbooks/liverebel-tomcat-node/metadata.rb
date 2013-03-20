@@ -15,3 +15,9 @@ depends "java"
 depends "liverebel-appserver-agent"
 depends "liverebel-sshkey"
 depends "liverebel-tomcat7"
+
+attribute "liverebel/tunnelport",
+  :display_name => "tunnel port",
+  :description => "The port that is used on the remote node to uniquely tunnel to this node",
+  :type => "string",
+  :required => "required"

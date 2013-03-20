@@ -86,3 +86,12 @@ vagrant_sshkey tc7home do
   owner tc7user
   group tc7group
 end
+
+# store the tunnel port in a file
+
+template "#{tc7home}/tunnelport" do
+  source "tunnelport.erb"
+  owner tc7user
+  group tc7group
+  mode 00640
+end
