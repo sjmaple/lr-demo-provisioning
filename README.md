@@ -266,3 +266,12 @@ Remarks about the provided files
 
 * all the other Chef cookbooks are the standard ones that can be obtained from
   http://community.opscode.com/cookbooks
+
+* the insecure private Vagrant keys are automatically downloaded from the
+  GitHub repository and set up as the default private key for the Vagrant user
+  on each node (``https://github.com/mitchellh/vagrant/tree/master/keys``)
+
+* the public key from the pair above have is added by default by Vagrant to 
+  ``/home/vagrant/.ssh/authorized_keys`` on each node, make sure to take this
+  into account when you base production machines on this configuration, you'll
+  most certainly want to use your own keys
