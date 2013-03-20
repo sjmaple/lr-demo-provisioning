@@ -10,14 +10,16 @@
 @lr_ip_php1 = "#{@lr_subnet}.6"
 @lr_ip_php2 = "#{@lr_subnet}.7"
 
-Vagrant::Config.run do |config|
+Vagrant.configure("2") do |config|
   config.vm.box = "precise32"
 
-  config.vm.boot_mode = :headless
-  config.vm.customize ["modifyvm", :id, "--memory", 384]
+  config.vm.provider :virtualbox do |vb|
+    vb.gui = false
+    vb.customize ["modifyvm", :id, "--memory", 384]
+  end
 
   config.vm.define :tomcatcluster do |config|
-    config.vm.network :hostonly, @lr_ip_tomcatcluster
+    config.vm.network :private_network, ip: @lr_ip_tomcatcluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
       chef_hosts_config(chef)
@@ -42,7 +44,7 @@ Vagrant::Config.run do |config|
   end
 
   config.vm.define :phpcluster do |config|
-    config.vm.network :hostonly, @lr_ip_phpcluster
+    config.vm.network :private_network, ip: @lr_ip_phpcluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
       chef_hosts_config(chef)
@@ -146,7 +148,7 @@ def chef_php_config(chef, ipAddress, identifier)
 end
 
 def chef_tomcat(config, ipAddress, identifier)
-  config.vm.network :hostonly, ipAddress
+  config.vm.network :private_network, ip: ipAddress
   config.vm.provision :chef_solo do |chef|
     chef_config(chef)
     chef_hosts_config(chef)
@@ -155,7 +157,7 @@ def chef_tomcat(config, ipAddress, identifier)
 end
 
 def chef_php(config, ipAddress, identifier)
-  config.vm.network :hostonly, ipAddress
+  config.vm.network :private_network, ip: ipAddress
   config.vm.provision :chef_solo do |chef|
     chef_config(chef)
     chef_hosts_config(chef)
