@@ -52,6 +52,12 @@ Set up the demo environment
     10.127.128.6 php1.answers.liverebel.com
     10.127.128.7 php2.answers.liverebel.com
     ```
+    
+* Clone the project with Git:
+   ```
+   $ git clone https://github. com/zeroturnaround/lr-demo-provisioning.git
+   $ git checkout composite # only if you are using composite branch
+   ```
 
 Start a PHP cluster
 -------------------
