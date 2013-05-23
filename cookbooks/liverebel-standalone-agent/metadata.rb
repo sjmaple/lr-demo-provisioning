@@ -54,3 +54,9 @@ attribute "liverebel/agent/type",
   :choice => [ "file", "database" ],
   :type => "string",
   :required => "required"
+
+attribute "liverebel/php_tunnelport",
+  :display_name => "php tunnel port",
+  :description => "The port that is used on the remote node to uniquely tunnel to the PHP server this node",
+  :type => "string",
+  :required => "optional"

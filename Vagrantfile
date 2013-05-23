@@ -57,7 +57,7 @@ Vagrant.configure("2") do |config|
       chef.json.deep_merge!({
         :cluster => {
           :sessionid => "BALANCEID",
-          :nodeport => 80,
+          :nodeport => 9090,
           :nodes => [@lr_ip_php1, @lr_ip_php2]
         }
       })
@@ -110,7 +110,7 @@ def chef_cluster_config(chef, ipAddress)
       :agentip => ipAddress,
       :agent => {
         :user => 'lragent',
-        :type => 'database'
+        :type => 'database-agent'
       }
     },
     :mysql => {
@@ -130,7 +130,7 @@ def chef_tomcat_config(chef, ipAddress, identifier)
     :liverebel => {
       :hostip => @lr_ip_host,
       :agentip => ipAddress,
-      :tunnelport => 18080+identifier
+      :tomcat_tunnelport => 18080+identifier
     },
     :tomcat => {
       :jvm_route => identifier
@@ -147,10 +147,11 @@ def chef_php_config(chef, ipAddress, identifier)
     :liverebel => {
       :hostip => @lr_ip_host,
       :agentip => ipAddress,
+      :php_tunnelport => 19080+identifier,
       :agent => {
         :user => 'lragent',
         :group => 'www-data',
-        :type => 'file'
+        :type => 'proxy'
       }
     },
     :php => {
