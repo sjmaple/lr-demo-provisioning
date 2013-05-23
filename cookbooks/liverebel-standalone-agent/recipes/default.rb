@@ -4,7 +4,7 @@ standalone_agent_user = node['liverebel']['agent']['user']
 standalone_agent_group = node['liverebel']['agent']['group']
 standalone_agent_type = node['liverebel']['agent']['type']
 standalone_agent_user_home = "/opt/#{standalone_agent_user}"
-standalone_agent_installer_jar = "lr-#{standalone_agent_type}-agent-installer.jar"
+standalone_agent_installer_jar = "lr-#{standalone_agent_type}-installer.jar"
 standalone_agent_installer_jar_path = "#{standalone_agent_user_home}/#{standalone_agent_installer_jar}"
 standalone_agent_installed_path = "#{standalone_agent_user_home}/lr-agent"
 
@@ -24,8 +24,22 @@ ruby_block 'update-standalone-agent-properties' do
   action :nothing
   block do
     file = Chef::Util::FileEdit.new("#{standalone_agent_installed_path}/conf/lr-agent.properties")
-    file.insert_line_if_no_match("/agent.host/", "agent.host=#{node['liverebel']['agentip']}")
+    file.insert_line_if_no_match("/agent\\.host/", "agent.host=#{node['liverebel']['agentip']}")
     file.write_file
+    if node['liverebel']['agent']['type'] == 'proxy'
+      file.insert_line_if_no_match("/liverebel\\.agent\\.http\\.session\\.cookieName/", "liverebel.agent.http.session.cookieName=PHPSESSID")
+      file.write_file
+      file.insert_line_if_no_match("/liverebel\\.agent\\.http\\.session\\.uriName/", "liverebel.agent.http.session.uriName=PHPSESSID")
+      file.write_file
+      file.insert_line_if_no_match("/liverebel\\.agent\\.proxy\\.http\\.bind\\.port/", "liverebel.agent.proxy.http.bind.port=9090")
+      file.write_file
+      file.insert_line_if_no_match("/liverebel\\.agent\\.proxy\\.http\\.forward\\.port/", "liverebel.agent.proxy.http.forward.port=80")
+      file.write_file
+      file.insert_line_if_no_match("/liverebel\\.agent\\.proxy\\.http\\.bind\\.host/", "liverebel.agent.proxy.http.bind.host=#{node['liverebel']['agentip']}")
+      file.write_file
+      file.insert_line_if_no_match("/liverebel\\.agent\\.proxy\\.http\\.forward\\.host/", "liverebel.agent.proxy.http.forward.host=#{node['liverebel']['agentip']}")
+      file.write_file
+    end
   end
 end
 
@@ -80,4 +94,13 @@ end
 vagrant_sshkey standalone_agent_user_home do
   owner standalone_agent_user
   group standalone_agent_group
+end
+
+# store the tunnel port in a file
+
+template "#{standalone_agent_user_home}/tunnelport" do
+  source "tunnelport.erb"
+  owner standalone_agent_user
+  group standalone_agent_group
+  mode 00640
 end
