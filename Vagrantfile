@@ -81,6 +81,7 @@ Vagrant.configure("2") do |config|
     config.vm.network :private_network, ip: @lr_ip_compositecluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
+      chef_apt_config(chef)
       chef_hosts_config_composite(chef)
       chef.add_recipe "liverebel-compositecluster-node"
       chef_cluster_config(chef, @lr_ip_compositecluster)
