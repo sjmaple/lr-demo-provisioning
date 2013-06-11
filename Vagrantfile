@@ -13,6 +13,9 @@
 @lr_ip_composite1 = "#{@lr_subnet}.9"
 @lr_ip_composite2 = "#{@lr_subnet}.10"
 
+@apt_repository = "http://ftp.estpak.ee/ubuntu/"
+@selenium_base_url = "http://selenium.googlecode.com/files/"
+
 Vagrant.configure("2") do |config|
   config.vm.box = "precise32"
 
@@ -134,6 +137,12 @@ def chef_hosts_config_composite(chef)
       :php2 => @lr_ip_composite2,
       :composite1 => @lr_ip_composite1,
       :composite2 => @lr_ip_composite2
+end
+
+def chef_apt_config(chef)
+  chef.json.deep_merge!({
+    :apt => {
+      :repository => @apt_repository
     }
   })
 end
@@ -169,6 +178,9 @@ def chef_tomcat_config(chef, ipAddress, identifier)
     },
     :tomcat => {
       :jvm_route => identifier
+    },
+    :selenium => {
+      :base_url => @selenium_base_url
     }
   })
 end
@@ -200,6 +212,7 @@ def chef_tomcat(config, ipAddress, identifier)
   config.vm.network :private_network, ip: ipAddress
   config.vm.provision :chef_solo do |chef|
     chef_config(chef)
+    chef_apt_config(chef)
     chef_hosts_config(chef)
     chef_tomcat_config(chef, ipAddress, identifier)
   end
@@ -209,6 +222,7 @@ def chef_php(config, ipAddress, identifier)
   config.vm.network :private_network, ip: ipAddress
   config.vm.provision :chef_solo do |chef|
     chef_config(chef)
+    chef_apt_config(chef)
     chef_hosts_config(chef)
     chef_php_config(chef, ipAddress, identifier)
   end
@@ -218,6 +232,7 @@ def chef_composite(config, ipAddress, identifier)
   config.vm.network :private_network, ip: ipAddress
   config.vm.provision :chef_solo do |chef|
     chef_config(chef)
+    chef_apt_config(chef)
     chef_hosts_config_composite(chef)
     chef_php_config(chef, ipAddress, identifier)
     chef_tomcat_config(chef, ipAddress, identifier)

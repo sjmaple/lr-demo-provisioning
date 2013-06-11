@@ -86,6 +86,12 @@ Start a PHP cluster
     ```
     https://localhost:9001
     ```
+* if you don't have the archives for the PHP demo application, you can either
+  build them from the relevant Git repo (https://github.com/zeroturnaround/lr-demo-answers-php)
+  or download the latest pre-packaged ones from our DropBox
+  (https://www.dropbox.com/sh/sq5wiz95grozldb/ZchlKVZCi-)
+  note that these change over time as the provisioning environment evolves,
+  make sure you have the latest ones
 
 * now you can deploy the `lr-demo-answers-php` PHP application through LiveRebel in
   both configured Apache servers and the database server, these are the steps:
@@ -181,6 +187,13 @@ Start a Tomcat cluster
 
 * the Tomcat service init scripts have also been modified to use the installed
   LiveRebel agent
+
+* if you don't have the archives for the Java demo application, you can either
+  build them from the relevant Git repo (https://github.com/zeroturnaround/lr-demo-answers-java)
+  or download the latest pre-packaged ones from our DropBox
+  (https://www.dropbox.com/sh/sq5wiz95grozldb/ZchlKVZCi-)
+  note that these change over time as the provisioning environment evolves,
+  make sure you have the latest ones
 
 * now you can deploy the `lr-demo-answers-java` web application through
   LiveRebel in both configured Tomcat servers and the database server, these

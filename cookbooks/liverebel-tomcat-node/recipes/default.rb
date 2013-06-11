@@ -3,7 +3,7 @@ gem_package "vagrant-vbguest" do
 end
 
 include_recipe "liverebel-sshkey"
-include_recipe "apt"
+include_recipe "liverebel-apt"
 include_recipe "java"
 include_recipe "liverebel-tomcat7"
 include_recipe "liverebel-appserver-agent"
@@ -31,7 +31,7 @@ execute "install-selenium" do
 end
 
 remote_file selenium_zip_path do
-  source "http://selenium.googlecode.com/files/#{selenium_zip}"
+  source "#{node['selenium']['base_url']}#{selenium_zip}"
   owner tc7user
   group tc7group
   mode 00644
