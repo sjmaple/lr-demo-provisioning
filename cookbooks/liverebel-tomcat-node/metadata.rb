@@ -10,7 +10,7 @@ recipe            "liverebel-tomcat-node", "LiveRebel demo Tomcat node"
   supports os
 end
 
-depends "apt"
+depends "liverebel-apt"
 depends "java"
 depends "liverebel-appserver-agent"
 depends "liverebel-sshkey"
@@ -19,5 +19,11 @@ depends "liverebel-tomcat7"
 attribute "liverebel/tunnelport",
   :display_name => "tunnel port",
   :description => "The port that is used on the remote node to uniquely tunnel to this node",
+  :type => "string",
+  :required => "required"
+
+attribute "selenium/base_url",
+  :display_name => "Selenium base url",
+  :description => "The base URL that will be used to download Selenium binaries from",
   :type => "string",
   :required => "required"

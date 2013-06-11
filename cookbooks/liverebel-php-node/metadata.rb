@@ -10,10 +10,10 @@ recipe            "liverebel-php-node", "LiveRebel demo PHP node"
   supports os
 end
 
+depends "liverebel-apt"
 depends "apache2"
 depends "apache2::mod_php5"
 depends "apache2::mod_rewrite"
-depends "apt"
 depends "java"
 depends "liverebel-standalone-agent"
 depends "php"
