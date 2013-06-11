@@ -28,6 +28,7 @@ Vagrant.configure("2") do |config|
     config.vm.network :private_network, ip: @lr_ip_tomcatcluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
+      chef_apt_config(chef)
       chef_hosts_config(chef)
       chef.add_recipe "liverebel-cluster-node"
       chef_cluster_config(chef, @lr_ip_tomcatcluster)
@@ -54,6 +55,7 @@ Vagrant.configure("2") do |config|
     config.vm.network :private_network, ip: @lr_ip_phpcluster
     config.vm.provision :chef_solo do |chef|
       chef_config(chef)
+      chef_apt_config(chef)
       chef_hosts_config(chef)
       chef.add_recipe "liverebel-cluster-node"
       chef_cluster_config(chef, @lr_ip_phpcluster)
