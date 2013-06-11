@@ -137,6 +137,8 @@ def chef_hosts_config_composite(chef)
       :php2 => @lr_ip_composite2,
       :composite1 => @lr_ip_composite1,
       :composite2 => @lr_ip_composite2
+    }
+  })
 end
 
 def chef_apt_config(chef)
