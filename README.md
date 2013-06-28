@@ -323,12 +323,20 @@ Start a composite cluster
     ```
 
 * all the nodes automatically download the latest file agent from LiveRebel
-  running on your machine outside of Vagrant and start it, you should see two
-  file servers, two application servers and one database server in the
-  LiveRebel Command Center at:
+  running on your machine outside of Vagrant and start it
+
+* the agents install themselves by using the `vagrant` agent token, go to the
+  `Agent tokens` section in the global `Settings` and accept that token:
 
     ```
-    https://localhost:9001
+    https://localhost:9001/agenttokens
+    ```
+
+* after a short delay, you should see two file servers, two application servers
+  and one database server in the LiveRebel Command Center at:
+
+    ```
+    https://localhost:9001/servers
     ```
 
 * the Tomcat service init scripts have also been modified to use the installed
