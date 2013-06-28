@@ -18,7 +18,7 @@ execute "install-appserver-agent" do
   cwd tc7home
   user tc7user
   group tc7group
-  command "/usr/bin/java -Dliverebel.host=#{node['liverebel']['hostip']} -jar #{appserver_agent_installer_jar_path}"
+  command "/usr/bin/java -Dliverebel.agent.token=vagrant -Dliverebel.host=#{node['liverebel']['hostip']} -jar #{appserver_agent_installer_jar_path}"
   action :nothing
   notifies :create, "ruby_block[update-appserver-agent-properties]", :immediately
   not_if do

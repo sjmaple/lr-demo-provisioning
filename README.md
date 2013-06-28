@@ -80,12 +80,22 @@ Start a PHP cluster
     ```
 
 * the PHP nodes automatically download the latest file agent from LiveRebel
-  running on your machine outside of Vagrant and start it, you should see two
-  file servers and one database server in the LiveRebel Command Center at:
+  running on your machine outside of Vagrant and start it
+
+* the agents install themselves by using the `vagrant` agent token, go to the
+  `Agent tokens` section in the global `Settings` and accept that token:
 
     ```
-    https://localhost:9001
+    https://localhost:9001/agenttokens
     ```
+
+* after a short delay, you should see two file servers and one database server
+  in the LiveRebel Command Center at:
+
+    ```
+    https://localhost:9001/servers
+    ```
+
 * if you don't have the archives for the PHP demo application, you can either
   build them from the relevant Git repo (https://github.com/zeroturnaround/lr-demo-answers-php)
   or download the latest pre-packaged ones from our DropBox
@@ -178,11 +188,21 @@ Start a Tomcat cluster
     ```
 
 * the Tomcat nodes automatically download the latest file agent from LiveRebel
-  running on your machine outside of Vagrant and start it, you should see two
-  application servers and one database server in the LiveRebel Command Center at:
+  running on your machine outside of Vagrant and start it
+
+
+* the agents install themselves by using the `vagrant` agent token, go to the
+  `Agent tokens` section in the global `Settings` and accept that token:
 
     ```
-    https://localhost:9001
+    https://localhost:9001/agenttokens
+    ```
+
+* after a short delay, you should see two application servers and one database
+  server in the LiveRebel Command Center at:
+
+    ```
+    https://localhost:9001/servers
     ```
 
 * the Tomcat service init scripts have also been modified to use the installed
