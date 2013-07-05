@@ -46,7 +46,7 @@ end
 execute "install-standalone-agent" do
   cwd standalone_agent_user_home
   user standalone_agent_user
-  command "/usr/bin/java -Dliverebel.cc.defaultAgentToken=vagrant -Dliverebel.host=#{node['liverebel']['hostip']} -jar #{standalone_agent_installer_jar_path}"
+  command "/usr/bin/java -Dliverebel.agent.token=vagrant -Dliverebel.host=#{node['liverebel']['hostip']} -jar #{standalone_agent_installer_jar_path}"
   action :nothing
   notifies :create, "ruby_block[update-standalone-agent-properties]", :immediately
   not_if do
