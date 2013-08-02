@@ -19,9 +19,14 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "precise32"
 
-  config.vm.provider :virtualbox do |vb|
+  config.vm.provider :vmware_fusion do |vb|
     vb.gui = false
     vb.customize ["modifyvm", :id, "--memory", 384]
+  end
+
+  config.vm.provider :virtualbox do |v|
+    v.gui = false
+    v.vmx["memsize"] = "512"
   end
 
   config.vm.define :tomcatcluster do |config|
