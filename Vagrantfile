@@ -14,16 +14,16 @@
 @selenium_base_url = "http://selenium.googlecode.com/files/"
 
 Vagrant.configure("2") do |config|
-  config.vm.provider :vmware_fusion do |vf|
+  config.vm.provider "vmware_fusion" do |vf, override|
     vf.gui = false
     vf.vmx["memsize"] = "512"
-    config.vm.box = "precise64_vmware"
+    override.vm.box = "precise64_vmware"
   end
 
-  config.vm.provider :virtualbox do |vb|
+  config.vm.provider "virtualbox" do |vb, override|
     vb.gui = false
     vb.customize ["modifyvm", :id, "--memory", 384]
-    config.vm.box = "precise32"
+    override.vm.box = "precise32"
   end
 
   config.vm.define :tomcatcluster do |config|
