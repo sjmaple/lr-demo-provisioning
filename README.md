@@ -37,6 +37,12 @@ Set up the demo environment
   http and https traffic to Java applications, otherwise it will not be
   possible to connect from the virtual machines to your local LiveRebel 
   installation
+    * on Windows 7, you can try the following to disable the firewall only on the virtual network:
+        * open "Windows Firewall with Advanced Security"
+        * open "Windows Firewall Properties"
+        * switch to the tab of the profile your connection is using (or apply the following steps to all three just to be sure)
+        * next to "Protected network connections", press the "Customize..." button
+        * uncheck the "VirtualBox Host-Only Network"
 
 * if you want to use the Facebook login feature of the demo applications, you
   will need to add the following entries to your local host name database
