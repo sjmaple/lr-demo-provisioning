@@ -13,7 +13,8 @@
 @lr_ip_composite1 = "#{@lr_subnet}.9"
 @lr_ip_composite2 = "#{@lr_subnet}.10"
 
-@apt_repository = "http://ftp.estpak.ee/ubuntu/"
+# uncomment to use a specific APT repository, can lead to broken APT packages
+# @apt_repository = "http://ftp.estpak.ee/ubuntu/"
 @selenium_base_url = "http://selenium.googlecode.com/files/"
 
 Vagrant.configure("2") do |config|

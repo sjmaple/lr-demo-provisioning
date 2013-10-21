@@ -1,8 +1,8 @@
+# Author:: Joshua Timberman (<joshua@opscode.com>)
+# Cookbook Name:: java
+# Recipe:: set_java_home
 #
-# Cookbook Name:: apt
-# Recipe:: cacher-ng
-#
-# Copyright 2008-2013, Opscode, Inc.
+# Copyright 2013, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,29 +15,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-node.set['apt']['caching_server'] = true
-
-package "apt-cacher-ng" do
-  action :install
+ruby_block  "set-env-java-home" do
+  block do
+    ENV["JAVA_HOME"] = node['java']['java_home']
+  end
+  not_if { ENV["JAVA_HOME"] == node['java']['java_home'] }
 end
 
-directory node['apt']['cacher_dir'] do
-  owner "apt-cacher-ng"
-  group "apt-cacher-ng"
-  mode 0755
+directory "/etc/profile.d" do
+  mode 00755
 end
 
-template "/etc/apt-cacher-ng/acng.conf" do
-  source "acng.conf.erb"
-  owner "root"
-  group "root"
-  mode 00644
-  notifies :restart, "service[apt-cacher-ng]", :immediately
-end
-
-service "apt-cacher-ng" do
-  supports :restart => true, :status => false
-  action [:enable, :start]
+file "/etc/profile.d/jdk.sh" do
+  content "export JAVA_HOME=#{node['java']['java_home']}"
+  mode 00755
 end

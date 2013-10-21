@@ -2,7 +2,7 @@
 # Cookbook Name:: apt
 # Recipe:: default
 #
-# Copyright 2008-2011, Opscode, Inc.
+# Copyright 2008-2013, Opscode, Inc.
 # Copyright 2009, Bryan McLellan <btm@loftninjas.org>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +18,16 @@
 # limitations under the License.
 #
 
+class ::Chef::Recipe
+  include Apt::Helpers
+end
+
+# On systems where apt is not installed, this recipe does not execute
+unless apt_installed?
+  Chef::Log.debug "apt is not installed. Skipping cache update."
+  return
+end
+
 # Run apt-get update to create the stamp file
 execute "apt-get-update" do
   command "apt-get update"
@@ -32,7 +42,7 @@ execute "apt-get update" do
   action :nothing
 end
 
-# Automatically remove packages that are no longer needed for depdencies
+# Automatically remove packages that are no longer needed for dependencies
 execute "apt-get autoremove" do
   command "apt-get -y autoremove"
   action :nothing
@@ -46,7 +56,7 @@ end
 
 # provides /var/lib/apt/periodic/update-success-stamp on apt-get update
 package "update-notifier-common" do
-  notifies :run, resources(:execute => "apt-get-update"), :immediately
+  notifies :run, 'execute[apt-get-update]', :immediately
 end
 
 execute "apt-get-update-periodic" do
