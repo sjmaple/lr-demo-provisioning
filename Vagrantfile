@@ -10,7 +10,8 @@
 @lr_ip_php1 = "#{@lr_subnet}.6"
 @lr_ip_php2 = "#{@lr_subnet}.7"
 
-@apt_repository = "http://ftp.estpak.ee/ubuntu/"
+# uncomment to use a specific APT repository, can lead to broken APT packages
+# @apt_repository = "http://ftp.estpak.ee/ubuntu/"
 @selenium_base_url = "http://selenium.googlecode.com/files/"
 
 Vagrant.configure("2") do |config|
