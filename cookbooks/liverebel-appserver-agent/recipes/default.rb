@@ -11,6 +11,8 @@ ruby_block 'update-appserver-agent-properties' do
     file = Chef::Util::FileEdit.new("#{appserver_agent_installed_path}/conf/lr-agent.properties")
     file.insert_line_if_no_match("/agent.host/", "agent.host=#{node['liverebel']['agentip']}")
     file.write_file
+    file.insert_line_if_no_match("/liverebel\\.preferredGroup/", "liverebel.preferredGroup=Answers-Java")
+    file.write_file
   end
 end
 
