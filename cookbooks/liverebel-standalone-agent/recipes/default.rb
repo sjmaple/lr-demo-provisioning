@@ -39,6 +39,8 @@ ruby_block 'update-standalone-agent-properties' do
       file.write_file
       file.insert_line_if_no_match("/liverebel\\.agent\\.proxy\\.http\\.forward\\.host/", "liverebel.agent.proxy.http.forward.host=#{node['liverebel']['agentip']}")
       file.write_file
+      file.insert_line_if_no_match("/liverebel\\.preferredGroup/", "liverebel.preferredGroup=Answers-PHP")
+      file.write_file
     end
   end
 end
