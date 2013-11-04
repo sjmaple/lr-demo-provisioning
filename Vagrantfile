@@ -20,13 +20,13 @@
 Vagrant.configure("2") do |config|
   config.vm.provider "vmware_fusion" do |vf, override|
     vf.gui = false
-    vf.vmx["memsize"] = "512"
+    vf.vmx["memsize"] = "1024"
     override.vm.box = "precise64_vmware"
   end
 
   config.vm.provider "virtualbox" do |vb, override|
     vb.gui = false
-    vb.customize ["modifyvm", :id, "--memory", 384]
+    vb.customize ["modifyvm", :id, "--memory", 512]
     override.vm.box = "precise32"
   end
 
