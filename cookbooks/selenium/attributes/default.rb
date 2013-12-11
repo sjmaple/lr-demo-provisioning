@@ -23,4 +23,4 @@ default.selenium.node.maxSession = '5'
 default.selenium.xvfb.display = ':98'
 default.selenium.xvfb.fbsize = '1280x1024x16'
 
-default.selenium.chromedriver_version = '23.0.1240.0'
+default.selenium.chromedriver_version = '2.7'
