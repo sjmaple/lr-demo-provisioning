@@ -5,28 +5,28 @@ end
 include_recipe "liverebel-sshkey"
 include_recipe "liverebel-apt"
 include_recipe "java"
-include_recipe "liverebel-tomcat7"
+include_recipe "liverebel-jboss7"
 
-tc7user = node["tomcat7"]["user"]
-tc7group = node["tomcat7"]["group"]
-tc7home = node["tomcat7"]["home"]
+jb7user = node["jboss7"]["user"]
+jb7group = node["jboss7"]["group"]
+jb7home = node["jboss7"]["home"]
 
-liverebel_appserver_agent "#{tc7home}" do
-  user tc7user
-  group tc7group
+liverebel_appserver_agent "#{jb7home}" do
+  user jb7user
+  group jb7group
 end
 
 # Download and install Selenium
 
 selenium_version = "2.31.0"
 selenium_zip = "selenium-java-#{selenium_version}.zip"
-selenium_zip_path = "#{tc7home}/#{selenium_zip}"
-selenium_installed_path = "#{tc7home}/selenium-2.31.0"
+selenium_zip_path = "#{jb7home}/#{selenium_zip}"
+selenium_installed_path = "#{jb7home}/selenium-2.31.0"
 
 execute "install-selenium" do
-  cwd tc7home
-  user tc7user
-  group tc7group
+  cwd jb7home
+  user jb7user
+  group jb7group
   command "jar xvf #{selenium_zip}"
   action :nothing
   not_if do
@@ -36,8 +36,8 @@ end
 
 remote_file selenium_zip_path do
   source "#{node['selenium']['base_url']}#{selenium_zip}"
-  owner tc7user
-  group tc7group
+  owner jb7user
+  group jb7group
   mode 00644
   notifies :run, "execute[install-selenium]", :immediately
   not_if do
@@ -47,23 +47,23 @@ end
 
 # install the vagrant private ssh key
 
-vagrant_sshkey tc7home do
-  owner tc7user
-  group tc7group
+vagrant_sshkey jb7home do
+  owner jb7user
+  group jb7group
 end
 
 # store the tunnel port in a file
 
-template "#{tc7home}/tunnelport" do
+template "#{jb7home}/tunnelport" do
   source "tunnelport.erb"
-  owner tc7user
-  group tc7group
+  owner jb7user
+  group jb7group
   mode 00640
 end
 
-# start the tomcat service
+# start the jboss service
 
-service "tomcat7" do
-    service_name "tomcat7"
+service "jboss7" do
+    service_name "jboss7"
     action :start
 end

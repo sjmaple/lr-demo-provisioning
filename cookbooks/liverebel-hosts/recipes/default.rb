@@ -20,6 +20,15 @@ end
 hostsfile_entry "#{node["hosts"]["php2"]}" do
   action    :remove
 end
+hostsfile_entry "#{node["hosts"]["jboss"]}" do
+  action    :remove
+end
+hostsfile_entry "#{node["hosts"]["jboss1"]}" do
+  action    :remove
+end
+hostsfile_entry "#{node["hosts"]["jboss2"]}" do
+  action    :remove
+end
 
 # add latest versions for the hosts
 hostsfile_entry "#{node["hosts"]["host"]}" do
@@ -48,5 +57,17 @@ hostsfile_entry "#{node["hosts"]["php1"]}" do
 end
 hostsfile_entry "#{node["hosts"]["php2"]}" do
   hostname  'php2.answers.liverebel.com'
+  action    :append
+end
+hostsfile_entry "#{node["hosts"]["jboss"]}" do
+  hostname  'jboss.answers.liverebel.com'
+  action    :append
+end
+hostsfile_entry "#{node["hosts"]["jboss"]}" do
+  hostname  'jboss1.answers.liverebel.com'
+  action    :append
+end
+hostsfile_entry "#{node["hosts"]["jboss2"]}" do
+  hostname  'jboss2.answers.liverebel.com'
   action    :append
 end
