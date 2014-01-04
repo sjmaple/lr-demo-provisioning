@@ -30,6 +30,21 @@ if node["hosts"]["composite2"]
     action    :remove
   end
 end
+if node["hosts"]["jboss"]
+  hostsfile_entry "#{node["hosts"]["jboss"]}" do
+    action    :remove
+  end
+end
+if node["hosts"]["jboss1"]
+  hostsfile_entry "#{node["hosts"]["jboss1"]}" do
+    action    :remove
+  end
+end
+if node["hosts"]["jboss2"]
+  hostsfile_entry "#{node["hosts"]["jboss2"]}" do
+    action    :remove
+  end
+end
 
 # add latest versions for the hosts
 hostsfile_entry "#{node["hosts"]["host"]}" do
@@ -69,6 +84,24 @@ end
 if node["hosts"]["composite2"]
   hostsfile_entry "#{node["hosts"]["composite2"]}" do
     hostname  'composite2.answers.liverebel.com'
+    action    :append
+  end
+end
+if node["hosts"]["jboss"]
+  hostsfile_entry "#{node["hosts"]["jboss"]}" do
+    hostname  'jboss.answers.liverebel.com'
+    action    :append
+  end
+end
+if node["hosts"]["jboss1"]
+  hostsfile_entry "#{node["hosts"]["jboss1"]}" do
+    hostname  'jboss1.answers.liverebel.com'
+    action    :append
+  end
+end
+if node["hosts"]["jboss2"]
+  hostsfile_entry "#{node["hosts"]["jboss2"]}" do
+    hostname  'jboss2.answers.liverebel.com'
     action    :append
   end
 end

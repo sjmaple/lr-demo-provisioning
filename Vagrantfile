@@ -12,6 +12,9 @@
 @lr_ip_compositecluster = "#{@lr_subnet}.8"
 @lr_ip_composite1 = "#{@lr_subnet}.9"
 @lr_ip_composite2 = "#{@lr_subnet}.10"
+@lr_ip_jbosscluster = "#{@lr_subnet}.11"
+@lr_ip_jboss1 = "#{@lr_subnet}.12"
+@lr_ip_jboss2 = "#{@lr_subnet}.13"
 
 # uncomment to use a specific APT repository, can lead to broken APT packages
 # @apt_repository = "http://ftp.estpak.ee/ubuntu/"
@@ -110,6 +113,32 @@ Vagrant.configure("2") do |config|
   config.vm.define :composite2 do |config|
     chef_composite(config, @lr_ip_composite2, 2)
   end
+
+  config.vm.define :jbosscluster do |config|
+    config.vm.network :private_network, ip: @lr_ip_jbosscluster
+    config.vm.provision :chef_solo do |chef|
+      chef_config(chef)
+      chef_apt_config(chef)
+      chef_hosts_config(chef)
+      chef_cluster_config(chef, @lr_ip_jbosscluster)
+      chef.json.deep_merge!({
+        :cluster => {
+          :sessionid => "JSESSIONID|jsessionid",
+          :nodeport => 8080,
+          :scolonpathdelim => true,
+          :nodes => [@lr_ip_jboss1, @lr_ip_jboss2]
+        }
+      })
+    end
+  end
+
+  config.vm.define :jboss1 do |config|
+    chef_jboss(config, @lr_ip_jboss1, 1)
+  end
+
+  config.vm.define :jboss2 do |config|
+    chef_jboss(config, @lr_ip_jboss2, 2)
+  end
 end
 
 def chef_config(chef)
@@ -128,7 +157,10 @@ def chef_hosts_config(chef)
       :java2 => @lr_ip_tomcat2,
       :php => @lr_ip_phpcluster,
       :php1 => @lr_ip_php1,
-      :php2 => @lr_ip_php2
+      :php2 => @lr_ip_php2,
+      :jboss => @lr_ip_jbosscluster,
+      :jboss1 => @lr_ip_jboss1,
+      :jboss2 => @lr_ip_jboss2
     }
   })
 end
@@ -219,6 +251,23 @@ def chef_php_config(chef, ipAddress, identifier)
   })
 end
 
+def chef_jboss_config(chef, ipAddress, identifier)
+  chef.add_recipe "liverebel-jboss-node"
+  chef.json.deep_merge!({
+    :liverebel => {
+      :hostip => @lr_ip_host,
+      :agentip => ipAddress,
+      :jboss_tunnelport => 20080+identifier
+    },
+    :jboss => {
+      :jvm_route => identifier
+    },
+    :selenium => {
+      :base_url => @selenium_base_url
+    }
+  })
+end
+
 def chef_tomcat(config, ipAddress, identifier)
   config.vm.network :private_network, ip: ipAddress
   config.vm.provision :chef_solo do |chef|
@@ -247,6 +296,16 @@ def chef_composite(config, ipAddress, identifier)
     chef_hosts_config_composite(chef)
     chef_php_config(chef, ipAddress, identifier)
     chef_tomcat_config(chef, ipAddress, identifier)
+  end
+end
+
+def chef_jboss(config, ipAddress, identifier)
+  config.vm.network :private_network, ip: ipAddress
+  config.vm.provision :chef_solo do |chef|
+    chef_config(chef)
+    chef_apt_config(chef)
+    chef_hosts_config(chef)
+    chef_jboss_config(chef, ipAddress, identifier)
   end
 end
 

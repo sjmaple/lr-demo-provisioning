@@ -42,6 +42,7 @@ directory tc7install do
 end
 
 # Get the tomcat binary 
+log "Downloading #{tc7url}"
 remote_file "/tmp/#{tc7tarball}" do
     source "#{tc7url}"
     mode "0644"
@@ -52,7 +53,8 @@ remote_file "/tmp/#{tc7tarball}" do
     end
 end
 
-# Extractd
+# Extract
+log "Untarring /tmp/#{tc7tarball}"
 execute "tar" do
     user "#{tc7user}"
     group "#{tc7group}"
@@ -64,7 +66,7 @@ end
 
 # Set the symlink
 link "#{tc7target}/tomcat" do
-    to "apache-tomcat-#{tc7ver}"
+    to "#{tc7install}"
     link_type :symbolic
 end
 

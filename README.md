@@ -57,6 +57,9 @@ Set up the demo environment
     10.127.128.5 php.answers.liverebel.com
     10.127.128.6 php1.answers.liverebel.com
     10.127.128.7 php2.answers.liverebel.com
+    10.127.128.11 jboss.answers.liverebel.com
+    10.127.128.12 jboss1.answers.liverebel.com
+    10.127.128.13 jboss2.answers.liverebel.com
     ```
     
 * Clone the project with Git:
