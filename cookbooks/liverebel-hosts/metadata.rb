@@ -71,3 +71,21 @@ attribute "hosts/composite2",
   :description => "IP address of the composite2 node",
   :type => "string",
   :required => "optional"
+
+attribute "hosts/jboss",
+  :display_name => "jboss IP",
+  :description => "IP address of the cluster for JBoss nodes",
+  :type => "string",
+  :required => "required"
+
+attribute "hosts/jboss1",
+  :display_name => "jboss1 IP",
+  :description => "IP address of the jboss1 node",
+  :type => "string",
+  :required => "required"
+
+attribute "hosts/jboss2",
+  :display_name => "jboss2 IP",
+  :description => "IP address of the jboss2 node",
+  :type => "string",
+  :required => "required"  
