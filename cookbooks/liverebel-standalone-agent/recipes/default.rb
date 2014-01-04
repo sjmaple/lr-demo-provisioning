@@ -62,7 +62,7 @@ remote_file standalone_agent_installer_jar_path do
   mode 00644
   notifies :run, "execute[install-standalone-agent]", :immediately
   not_if do
-    File.exists?(standalone_agent_installer_jar_path)
+    node["liverebel"]["install_agents"] != 'On' || File.exists?(standalone_agent_installer_jar_path)
   end
 end
 
@@ -89,6 +89,9 @@ end
 service "lragent" do
     service_name "lragent"
     action :start
+    not_if do
+      node["liverebel"]["install_agents"] != 'On'
+    end
 end
 
 # install the vagrant private ssh key

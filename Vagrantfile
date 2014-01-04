@@ -1,6 +1,12 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# Setting this to false will not install the LiveRebel agents automatically
+# note that it will also not start the service scripts since these have been
+# modified for the assumption that the agents are correctly installed.
+@lr_install_agents = true
+
+# If needed, the IP addresses used can be changed below.
 @lr_subnet = "10.127.128"
 @lr_ip_host = "#{@lr_subnet}.1"
 @lr_ip_tomcatcluster = "#{@lr_subnet}.2"
@@ -16,8 +22,9 @@
 @lr_ip_jboss1 = "#{@lr_subnet}.12"
 @lr_ip_jboss2 = "#{@lr_subnet}.13"
 
-# uncomment to use a specific APT repository, can lead to broken APT packages
+# Uncomment to use a specific APT repository, can lead to broken APT packages
 # @apt_repository = "http://ftp.estpak.ee/ubuntu/"
+
 @selenium_base_url = "http://selenium.googlecode.com/files/"
 
 Vagrant.configure("2") do |config|
@@ -197,6 +204,7 @@ end
 def chef_cluster_config(chef, ipAddress)
   chef.json.deep_merge!({
     :liverebel => {
+      :install_agents => @lr_install_agents ? 'On' : 'Off',
       :hostip => @lr_ip_host,
       :agentip => ipAddress,
       :agent => {
@@ -219,6 +227,7 @@ def chef_tomcat_config(chef, ipAddress, identifier)
   chef.add_recipe "liverebel-tomcat-node"
   chef.json.deep_merge!({
     :liverebel => {
+      :install_agents => @lr_install_agents ? 'On' : 'Off',
       :hostip => @lr_ip_host,
       :agentip => ipAddress,
       :tomcat_tunnelport => 18080+identifier
@@ -236,6 +245,7 @@ def chef_php_config(chef, ipAddress, identifier)
   chef.add_recipe "liverebel-php-node"
   chef.json.deep_merge!({
     :liverebel => {
+      :install_agents => @lr_install_agents ? 'On' : 'Off',
       :hostip => @lr_ip_host,
       :agentip => ipAddress,
       :php_tunnelport => 19080+identifier,
@@ -259,6 +269,7 @@ def chef_jboss_config(chef, ipAddress, identifier)
   chef.add_recipe "liverebel-jboss-node"
   chef.json.deep_merge!({
     :liverebel => {
+      :install_agents => @lr_install_agents ? 'On' : 'Off',
       :hostip => @lr_ip_host,
       :agentip => ipAddress,
       :jboss_tunnelport => 20080+identifier

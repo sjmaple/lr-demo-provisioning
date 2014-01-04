@@ -66,4 +66,7 @@ end
 service "jboss7" do
     service_name "jboss7"
     action :start
+    not_if do
+      node["liverebel"]["install_agents"] != 'On'
+    end
 end

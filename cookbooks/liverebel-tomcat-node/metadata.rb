@@ -16,6 +16,12 @@ depends "liverebel-appserver-agent"
 depends "liverebel-sshkey"
 depends "liverebel-tomcat7"
 
+attribute "liverebel/install_agents",
+  :display_name => "install LiveRebel agents",
+  :description => "Indicates whether the LiveRebel agent should be automatically installed",
+  :type => "string",
+  :default => "On"
+
 attribute "liverebel/tomcat_tunnelport",
   :display_name => "tomcat tunnel port",
   :description => "The port that is used on the remote node to uniquely tunnel to Tomcat on this node",

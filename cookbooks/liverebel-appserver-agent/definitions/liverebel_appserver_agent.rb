@@ -39,7 +39,7 @@ define :liverebel_appserver_agent, :user => nil, :group => nil do
     mode 00644
     notifies :run, "execute[install-appserver-agent]", :immediately
     not_if do
-      File.exists?(appserver_agent_installer_jar_path)
+      node["liverebel"]["install_agents"] != 'On' || File.exists?(appserver_agent_installer_jar_path)
     end
   end
 end

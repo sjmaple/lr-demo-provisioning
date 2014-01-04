@@ -10,4 +10,8 @@ recipe            "liverebel-appserver-agent", "LiveRebel agent for the Tomcat s
   supports os
 end
 
-depends "liverebel-tomcat7"
+attribute "liverebel/install_agents",
+  :display_name => "install LiveRebel agents",
+  :description => "Indicates whether the LiveRebel agent should be automatically installed",
+  :type => "string",
+  :default => "On"

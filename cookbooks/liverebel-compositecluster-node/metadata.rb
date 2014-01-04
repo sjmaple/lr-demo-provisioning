@@ -25,6 +25,12 @@ depends "selenium::firefox"
 depends "selenium::grid_hub"
 depends "selenium::grid_node"
 
+attribute "liverebel/install_agents",
+  :display_name => "install LiveRebel agents",
+  :description => "Indicates whether the LiveRebel agent should be automatically installed",
+  :type => "string",
+  :default => "On"
+
 attribute "cluster",
   :display_name => "cluster configuration",
   :description => "Hash of cluster configuration parameters",
