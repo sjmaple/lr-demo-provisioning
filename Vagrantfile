@@ -120,6 +120,7 @@ Vagrant.configure("2") do |config|
       chef_config(chef)
       chef_apt_config(chef)
       chef_hosts_config(chef)
+      chef.add_recipe "liverebel-cluster-node"
       chef_cluster_config(chef, @lr_ip_jbosscluster)
       chef.json.deep_merge!({
         :cluster => {
