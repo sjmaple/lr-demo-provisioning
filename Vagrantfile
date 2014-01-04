@@ -177,7 +177,10 @@ def chef_hosts_config_composite(chef)
       :php1 => @lr_ip_composite1,
       :php2 => @lr_ip_composite2,
       :composite1 => @lr_ip_composite1,
-      :composite2 => @lr_ip_composite2
+      :composite2 => @lr_ip_composite2,
+      :jboss => @lr_ip_jbosscluster,
+      :jboss1 => @lr_ip_jboss1,
+      :jboss2 => @lr_ip_jboss2
     }
   })
 end
