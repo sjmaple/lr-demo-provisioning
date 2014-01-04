@@ -483,6 +483,11 @@ Remarks about the provided files
   - MySQL is set up with `change_me` for its passwords, you might want
     to ... change them :-)
 
+* the LiveRebel agents are installation automatically by default, setting the
+  `@lr_install_agents` variable in the Vagrantfile to `false` will bypass the
+  agent installation steps. This is only really useful for manually testing
+  the agent installation steps
+
 * the Chef cookbooks prefixed with `liverebel-` have been created or modified
   specifically for this demo environment
 
