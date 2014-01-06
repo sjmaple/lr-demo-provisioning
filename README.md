@@ -483,10 +483,16 @@ Remarks about the provided files
   - MySQL is set up with `change_me` for its passwords, you might want
     to ... change them :-)
 
-* the LiveRebel agents are installation automatically by default, setting the
+* the LiveRebel agents are installed automatically by default, setting the
   `@lr_install_agents` variable in the Vagrantfile to `false` will bypass the
   agent installation steps. This is only really useful for manually testing
-  the agent installation steps
+  the agent installation. Note that when doing this, you should also
+  manually edit the `lr-agent/conf/lr-agent.properties` files and set the
+  `agent.host` property to the IP address of the VM (10.127.128.x) and the
+  `liverebel.agent.cc.host` property to the IP address within the virtual
+  network on which LiveRebel CC is running (10.127.128.1). This is due to
+  multiple virtual network interfaces being created by Vagrant with the first
+  one not being the appropriate network.
 
 * the Chef cookbooks prefixed with `liverebel-` have been created or modified
   specifically for this demo environment
