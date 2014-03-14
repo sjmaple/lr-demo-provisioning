@@ -260,7 +260,7 @@ def chef_php_config(chef, ipAddress, identifier)
     },
     :phpunit => {
       :install_method => "pear",
-      :version => "3.7.14"
+      :version => "3.7.32"
     }
   })
 end
