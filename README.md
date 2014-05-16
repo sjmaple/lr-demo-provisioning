@@ -64,7 +64,7 @@ Set up the demo environment
     
 * Clone the project with Git:
    ```
-   $ git clone https://github. com/zeroturnaround/lr-demo-provisioning.git
+   $ git clone https://github.com/zeroturnaround/lr-demo-provisioning.git
    $ git checkout composite # only if you are using composite branch
    ```
 
