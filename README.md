@@ -124,12 +124,13 @@ Start a PHP cluster
     ```
 
   * configure the MySQL server in LiveRebel by going to the `Servers` tab and
-    clicking on `Details` next to `Database server`, these are the connection
+    clicking on `Add Schema` next to `Database server`. First click 'Upload new driver'
+    and select the MySQL jar you have downloaded and extracted. Next select the 
+    MySQL driver in the drop down options and use the following connection
     details:
 
     ```
-    Driver: MySQL
-    Host: 10.127.128.5 : 3306 / answers
+    Host:Port/Schema 10.127.128.5 : 3306 / answers
     Username: answers  Password: change_me
     ```
   
